@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 15, 2023 at 06:05 PM
+-- Generation Time: Apr 16, 2023 at 01:08 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -79,6 +79,16 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`username`, `first_name`, `last_name`, `email`, `password`) VALUES
+('ouassima12', 'Ouassima', 'Aboukhair', 'ouassima@gmail.com', '123456'),
+('test', 'test', 'test lastname', 'test@gmail.com', '123'),
+('yahya.lz', 'Yahya', 'Lazrek', 'duo.lz.yahya@gmail.com', '123456'),
+('yousra.eb', 'Yousra', 'Elbarreq', 'yousra@gmail.com', '123456');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -106,7 +116,8 @@ ALTER TABLE `stockownership`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`username`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `UC_email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
