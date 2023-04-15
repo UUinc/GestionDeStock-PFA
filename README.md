@@ -26,12 +26,12 @@ To install this application on your computer, follow the below steps:
 2.  Install Python 3.10 or higher version from
 <a href="https://www.python.org/downloads/" target="_new">https://www.python.org/downloads/</a>
 3.  Install the following Python packages: tkinter,
-    mysql-connector-python. You can install them using pip or conda
+    pymysql. You can install them using pip or conda
     package managers. For example, in pip, you can run the following
     command:
 
 ```
-pip install tkinter mysql-connector-python
+pip install tkinter pymysql
 ```
 
 4.  Create a MySQL database, and import the `database.sql` file from the
@@ -44,7 +44,7 @@ pip install tkinter mysql-connector-python
 HOST = "localhost"
 USER = "root"
 PASSWORD = "password"
-DATABASE = "gestion_de_stock"
+DATABASE = "gestion_stock"
 ```
 
 6.  Run the `main.py` file to start the application.
