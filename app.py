@@ -21,9 +21,17 @@ def mysqlconnect():
     cur = conn.cursor()
 
     #Add User
-    cur.execute('INSERT INTO user VALUES(%s, %s, %s, %s, %s)', addUser())
-    conn.commit()
-    print('new user added')
+    try:
+        cur.execute('INSERT INTO user VALUES(%s, %s, %s, %s, %s)', addUser())
+        conn.commit()
+        print('new user added')
+    except Exception as e:
+        match e.args[1].split()[5].strip('\''):
+            case 'PRIMARY':
+                print("Username already exist")
+            case 'UC_email':
+                print("Email already exist")
+    
 
     #Delete User
     username = input("username to delete: ")
@@ -31,6 +39,11 @@ def mysqlconnect():
     conn.commit()
     print('user has been deleted')
 
+    #Update User
+    username, first, last, email, password = addUser()
+    cur.execute('UPDATE user SET first_name = %s, last_name = %s, email = %s, password = %s WHERE username = %s', (first, last, email, password, username))
+    conn.commit()
+    print('user has been updated')
 
     #User list
     cur.execute("select * from user")
@@ -39,7 +52,6 @@ def mysqlconnect():
         print(i)
 
     conn.close()
-
 
 #main
 if __name__ == "__main__":
