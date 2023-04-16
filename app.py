@@ -31,6 +31,8 @@ def mysqlconnect():
                 print("Username already exist")
             case 'UC_email':
                 print("Email already exist")
+            case _:
+                print("error occured!")
     
 
     #Delete User
