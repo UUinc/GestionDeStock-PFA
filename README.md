@@ -25,13 +25,10 @@ To install this application on your computer, follow the below steps:
 1.  Download the source code from the GitHub repository: https://github.com/UUinc/GestionDeStock-PFA
 2.  Install Python 3.10 or higher version from
 <a href="https://www.python.org/downloads/" target="_new">https://www.python.org/downloads/</a>
-3.  Install the following Python packages: tkinter,
-    pymysql. You can install them using pip or conda
-    package managers. For example, in pip, you can run the following
-    command:
+3.  Install the following Python packages: __ttkbootstrap__, __pymysql__.
 
 ```
-pip install tkinter pymysql
+pip install ttkbootstrap pymysql
 ```
 
 4.  Create a MySQL database, and import the `database.sql` file from the
@@ -56,8 +53,6 @@ credentials to access the main screen. From there, you can navigate to
 different screens to perform the desired action.
 
 ## Demo
-
-website: http://uuinc.github.io/gestion-de-stock-pfa-web
 
 ![Dairy_Inventory_Web_App](https://user-images.githubusercontent.com/63449913/229149190-6f7b5db5-05f6-4c87-b94f-3943a900bec7.png)
 
