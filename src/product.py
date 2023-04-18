@@ -1,4 +1,5 @@
 from connect import *
+from utils import *
 
 class Product:
     __product_id = -1
@@ -23,18 +24,35 @@ class Product:
         product += f" last release date: ({self.__last_release_date})\n"
         return product
 
+    #Setters    
     def set_product_id(self, id):
         self.__product_id = id
 
-    def set_product(self, name, description, unit_price, quantity, alert_threshold, last_entry_date, last_release_date):
+    def set_name(self, name):
         self.__name = name
-        self.__description = description
-        self.__unit_price = unit_price
-        self.__quantity = quantity
-        self.__alert_threshold = alert_threshold
-        self.__last_entry_date = last_entry_date
-        self.__last_release_date = last_release_date
 
+    def set_description(self, description):
+        self.__description = description
+
+    def set_alert_threshold(self, alert_threshold):
+        self.__alert_threshold = alert_threshold
+
+    def set_unit_price(self, unit_price):
+        self.__unit_price = unit_price
+
+    def add_quantity(self, value):
+        self.__quantity += value
+        self.__last_entry_date = current_timestamp()
+
+    def remove_quantity(self, value):
+        if value > self.__quantity:
+            print('Error: Cannot remove quantity. The requested value is higher than the current quantity in stock. Please enter a lower value or check the current stock level before proceeding.')
+            return
+
+        self.__quantity -= value
+        self.__last_release_date = current_timestamp()
+
+    #CRUD
     def add_product(self, stock_id):
         conn = mysqlconnect()
         cur = conn.cursor()
@@ -73,8 +91,7 @@ class Product:
         conn.close()
 
 
+# testing
 # p1 = Product('9oo9a', 'fakiha mofida', 20, 10, 2, '2023-10-20', '2023-10-25')
-# p1.add_product(1)
-# p1.set_product('9oo9a', 'fakiha mofida jidan', 25, 15, 2, '2023-10-20', '2023-10-25')
-# p1.update_product(1)
+# p1.remove_quantity(50)
 # print(p1)
