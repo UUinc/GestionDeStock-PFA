@@ -4,7 +4,7 @@ from utils import *
 class Product:
     __product_id = -1
 
-    def __init__(self, name, description, unit_price, quantity, alert_threshold, last_entry_date, last_release_date):
+    def __init__(self, name='', description='', unit_price=0, quantity=0, alert_threshold=0, last_entry_date='', last_release_date=''):
         self.__name = name
         self.__description = description
         self.__unit_price = unit_price
@@ -53,6 +53,17 @@ class Product:
         self.__last_release_date = current_timestamp()
 
     #CRUD
+    @staticmethod
+    def get_product(product_id):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM product WHERE product_id = %s', product_id)
+        result = cur.fetchone()
+        product = Product(result[1], result[2], result[3], result[4], result[5], result[6], result[7])
+        product.set_product_id(result[0])
+        conn.close()
+        return product
+
     def add_product(self, stock_id):
         conn = mysqlconnect()
         cur = conn.cursor()
@@ -92,6 +103,5 @@ class Product:
 
 
 # testing
-# p1 = Product('9oo9a', 'fakiha mofida', 20, 10, 2, '2023-10-20', '2023-10-25')
-# p1.remove_quantity(50)
-# print(p1)
+p1 = Product.get_product(6)
+print(p1)
