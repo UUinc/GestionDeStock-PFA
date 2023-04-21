@@ -48,7 +48,6 @@ class Product:
         if value > self.__quantity:
             print('Error: Cannot remove quantity. The requested value is higher than the current quantity in stock. Please enter a lower value or check the current stock level before proceeding.')
             return
-
         self.__quantity -= value
         self.__last_release_date = current_timestamp()
 
@@ -67,31 +66,25 @@ class Product:
     def add_product(self, stock_id):
         conn = mysqlconnect()
         cur = conn.cursor()
-
         cur.execute('''INSERT INTO product(name, description, unit_price, quantity, alert_threshold, last_entry_date, last_release_date, stock_id) 
                        VALUES(%s, %s, %s, %s, %s, %s, %s, %s)''', 
                     (self.__name, self.__description, self.__unit_price, self.__quantity, self.__alert_threshold, self.__last_entry_date, self.__last_release_date, stock_id))
         conn.commit()
-
         self.__product_id = cur.lastrowid
         print('new product added')
-        
         conn.close()
 
     def delete_product(self):
         conn = mysqlconnect()
         cur = conn.cursor()
-
         cur.execute('DELETE FROM product WHERE product_id = %s', self.__product_id)
         conn.commit()
         print('product deleted')
-        
         conn.close()
     
     def update_product(self, stock_id):
         conn = mysqlconnect()
         cur = conn.cursor()
-
         cur.execute('''UPDATE product 
                        SET name = %s, description = %s, unit_price = %s, quantity = %s, alert_threshold = %s, last_entry_date = %s, last_release_date = %s, stock_id = %s 
                        WHERE product_id = %s
@@ -100,7 +93,6 @@ class Product:
         print('product updated')
         
         conn.close()
-
 
 # testing
 p1 = Product.get_product(6)

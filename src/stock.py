@@ -31,7 +31,6 @@ class Stock:
     def add_stock(self):
         conn = mysqlconnect()
         cur = conn.cursor()
-
         cur.execute('''INSERT INTO stock(name, description, creation_date, last_edit) 
                        VALUES(%s, %s, %s, %s)''', 
                     (self.__name, self.__description, self.__creation_date, self.__last_edit))
@@ -39,7 +38,6 @@ class Stock:
 
         self.__stock_id = cur.lastrowid
         print('new stock added')
-        
         conn.close()
 
     #renaming
@@ -50,11 +48,9 @@ class Stock:
     def delete_stock(self):
         conn = mysqlconnect()
         cur = conn.cursor()
-
         cur.execute('DELETE FROM stock WHERE stock_id = %s', self.__stock_id)
         conn.commit()
         print('stock deleted')
-        
         conn.close()
 
 stock = Stock('l3iba','eywaaaaaa')

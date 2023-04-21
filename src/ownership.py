@@ -11,7 +11,6 @@ class Ownership:
     def add_stock_user(self):
         conn = mysqlconnect()
         cur = conn.cursor()
-
         cur.execute('''INSERT INTO stockownership(username,stock_id,ownership_start_date,role) 
                        VALUES(%s, %s, %s, %s)''', 
                     (self.__stock_id,self.__username,self.__ownership_start_date,self.__role))
@@ -23,16 +22,15 @@ class Ownership:
     def remove_stock_user(self):
         conn = mysqlconnect()
         cur = conn.cursor()
-    
         cur.execute('DELETE FROM stockownership WHERE stock_id = %s and username= %s',self.__stock_id,self.__username)
         conn.commit()
         print('stock user removed')
         
         conn.close()
+
     def edit_stock_user(self):
         conn = mysqlconnect()
         cur = conn.cursor()
-
         cur.execute('''UPDATE stockownership 
                        SET ownership_start_date = %s, role = %s 
                        WHERE stock_id = %s and username= %s
