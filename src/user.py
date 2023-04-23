@@ -7,16 +7,17 @@ class User:
         self.__first_name = first_name
         self.__last_name = last_name
         self.__email = email
-        self.__password = password
+        self.__password = hash_password(password)
         
     @staticmethod
     def login(username, password):
         conn = mysqlconnect()
         cur = conn.cursor()
-        cur.execute('SELECT count(*) FROM User WHERE username = %s AND password = %s', (username, password))
+        cur.execute('SELECT count(*) FROM user WHERE username = %s AND password = %s', (username, hash_password(password)))
         output = cur.fetchone()
+        
         conn.close()
-        return output[0]==0
+        return output[0]!=0
         
     def signup(self):
         conn = mysqlconnect()
@@ -37,25 +38,26 @@ class User:
             return False
         conn.close()
 
+    def set_information(self,first_name,last_name,email,password):
+        self.__first_name=first_name
+        self.__last_name=last_name
+        self.__email=email
+        self.__password = hash_password(password)
+    
     @staticmethod
     def get_information(username):
         conn = mysqlconnect()
         cur = conn.cursor()
         cur.execute('SELECT * FROM user WHERE username = %s', username)
         result = cur.fetchone()
-        user = User(result[1], result[2], result[3], result[4])
-        user.__username(result[0])
+        user = User(result[0], result[1], result[2], result[3])
         conn.close()
         return user
-         
-    def set_information(self,first_name,last_name,email,password):
-        self.__first_name=first_name
-        self.__last_name=last_name
-        self.__email=email
-        self.__password=password
 
+# u = User('yousra.eb','yousra','elberraq','yous@gmail.com','123')
+# u.signup()
 
-#u = user('yousra1','yousra','elbq','yous@gmail.com','456')
-#u.login()
-User.login('ouass1','123')
-User.signup('yaya', 'yahya', 'lazrek', 'yaya@gmail.com', 'ya12')
+if User.login('yousra.eb','123'):
+    print("Welcome")
+else:
+    print("Incorrect credentials")
