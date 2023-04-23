@@ -18,7 +18,7 @@ class User:
         conn.close()
         return output[0]==0
         
-    def signup(self, username, first_name, last_name, email, password):
+    def signup(self):
         conn = mysqlconnect()
         cur = conn.cursor()
         try:
@@ -37,11 +37,23 @@ class User:
             return False
         conn.close()
 
-    def get_information(self):
-        pass 
-    
-    def set_information(self):
-        pass
+    @staticmethod
+    def get_information(username):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM user WHERE username = %s', username)
+        result = cur.fetchone()
+        user = User(result[1], result[2], result[3], result[4])
+        user.__username(result[0])
+        conn.close()
+        return user
+         
+    def set_information(self,first_name,last_name,email,password):
+        self.__first_name=first_name
+        self.__last_name=last_name
+        self.__email=email
+        self.__password=password
+
 
 #u = user('yousra1','yousra','elbq','yous@gmail.com','456')
 #u.login()
