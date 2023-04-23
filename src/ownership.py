@@ -38,11 +38,25 @@ class Ownership:
     def add_stock_user(self):
         conn = mysqlconnect()
         cur = conn.cursor()
-        cur.execute('''INSERT INTO stockownership(username, stock_id, ownership_start_date, role) 
+        try:
+            cur.execute('''INSERT INTO stockownership(username, stock_id, ownership_start_date, role) 
                        VALUES(%s, %s, %s, %s)''', 
                     (self.__username, self.__stock_id, self.__ownership_start_date, self.__role))
-        conn.commit()
-        print('new stock user added')
+            conn.commit()
+            print('new stock user added')
+            return True
+        except Exception as e:
+            if e.args[0] == 1452:
+                match e.args[1].split()[17].strip('(').strip(')').strip('`'):
+                    case 'username':
+                        print("Username does not exist")
+                    case 'stock_id':
+                        print("Stock id does not exist")
+                    case _:
+                        print("error occured!")
+            elif e.args[1].split()[5].strip('\'') == "PRIMARY":
+                print("Primary key already exist")
+            return False
         conn.close()
 
     def remove_stock_user(self):
@@ -64,4 +78,5 @@ class Ownership:
         print('stock user updated')
         conn.close()
 
-test= Ownership()
+test = Ownership("yousra.eb", 2, "edit")
+test.add_stock_user()
