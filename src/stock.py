@@ -23,9 +23,11 @@ class Stock:
 
     def set_name(self, name):
         self.__name = name
+        self.__last_edit=current_timestamp()
 
     def set_description(self,description):
         self.__description = description
+        self.__last_edit=current_timestamp()
 
     #adding
     def add_stock(self):
@@ -40,11 +42,43 @@ class Stock:
         print('new stock added')
         conn.close()
 
-    #renaming
-    def rename_stock(self,name):
-        self.__name=name
+    @staticmethod
+    def get_stock(stock_id):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM stock WHERE stock_id = %s', stock_id)
+        result = cur.fetchone()
+        stock = Stock(result[1], result[2], result[3])
+        stock.set_stock_id(result[0])
+        conn.close()
+        return stock
 
-    #deleting
+    def update_stock_name(self):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+
+        cur.execute('''UPDATE stock 
+                       SET name = %s , last_edit= %s
+                       WHERE stock_id = %s
+                    ''', (self.__name,self.__last_edit,self.__stock_id))
+        conn.commit()
+        print('stock name updated')
+        
+        conn.close()
+
+    def update_stock_description(self,description):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+
+        cur.execute('''UPDATE stock 
+                       SET description = %s, last_edit= %s
+                       WHERE stock_id = %s
+                    ''', (self.__description,self.__last_edit,self.__stock_id))
+        conn.commit()
+        print('stock description updated')
+        
+        conn.close()
+
     def delete_stock(self):
         conn = mysqlconnect()
         cur = conn.cursor()
@@ -55,5 +89,5 @@ class Stock:
 
 stock = Stock('l3iba','eywaaaaaa')
 print(stock)
-stock.add_stock
+stock.add_stock()
     
