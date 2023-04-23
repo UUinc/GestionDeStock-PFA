@@ -31,7 +31,7 @@ class Ownership:
         cur.execute('SELECT * FROM stockownership WHERE username = %s and stock_id = %s', username, stock_id)
         result = cur.fetchone()
         ownership = Ownership(result[0], result[1], result[3])
-        set_ownership_start_date(result[2])
+        ownership.set_ownership_start_date(result[2])
         conn.close()
         return ownership
 
@@ -63,3 +63,5 @@ class Ownership:
         conn.commit()
         print('stock user updated')
         conn.close()
+
+test= Ownership()

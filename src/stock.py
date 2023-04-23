@@ -88,6 +88,7 @@ class Stock:
         conn.close()
 
 stock = Stock('l3iba','eywaaaaaa')
-print(stock)
 stock.add_stock()
+print(stock)
+
     

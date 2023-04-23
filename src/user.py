@@ -54,8 +54,8 @@ class User:
         conn.close()
         return user
 
-# u = User('yousra.eb','yousra','elberraq','yous@gmail.com','123')
-# u.signup()
+u = User('yousra.eb','yousra','elberraq','yous@gmail.com','123')
+u.signup()
 
 if User.login('yousra.eb','123'):
     print("Welcome")
