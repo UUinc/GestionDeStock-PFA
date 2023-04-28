@@ -78,5 +78,5 @@ class Ownership:
         print('stock user updated')
         conn.close()
 
-test = Ownership("yousra.eb", 2, "edit")
+test = Ownership("yousra.eb", 3, "edit")
 test.add_stock_user()
