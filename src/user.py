@@ -15,7 +15,6 @@ class User:
         cur = conn.cursor()
         cur.execute('SELECT count(*) FROM user WHERE username = %s AND password = %s', (username, hash_password(password)))
         output = cur.fetchone()
-        
         conn.close()
         return output[0]!=0
         

@@ -87,8 +87,6 @@ class Stock:
         print('stock deleted')
         conn.close()
 
-stock = Stock('l3iba','eywaaaaaa')
-stock.add_stock()
-print(stock)
+
 
     
