@@ -2,8 +2,12 @@ from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
-from pages.page1 import Page1
-from pages.page2 import Page2
+from pages.login_page import LoginPage
+from pages.signup_page import SignupPage
+from pages.home_page import HomePage
+from pages.settings_page import SettingsPage
+from pages.stock_page import StockPage
+from pages.stock_settings_page import StockSettingsPage
 
 class GUI:
     def __init__(self):
@@ -16,11 +20,11 @@ class GUI:
         self.container.pack(fill="both", expand=True)
 
         self.pages = {}
-        for page_name in (Page1, Page2):
+        for page_name in (LoginPage, SignupPage, HomePage, SettingsPage, StockPage, StockSettingsPage):
             page = page_name(self.container, self)
             self.pages[page_name] = page
             page.grid(row=0, column=0, sticky="nsew")
-        self.show_page(Page1)
+        self.show_page(LoginPage)
 
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.root.mainloop()
