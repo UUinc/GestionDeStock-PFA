@@ -11,10 +11,11 @@ from pages.stock_settings_page import StockSettingsPage
 
 class GUI:
     def __init__(self):
-        self.root = ttk.Window()
+        self.root = ttk.Window(themename="gestionstock")
         self.root.title("STOCK.ME")
-        self.root.iconbitmap("../assets/stockme.ico")
+        self.root.iconbitmap("../assets/icon/stockme.ico")
         self.root.state('zoomed')
+        self.root.resizable(False, False)
 
         self.container = ttk.Frame(self.root)
         self.container.pack(fill="both", expand=True)
@@ -36,7 +37,6 @@ class GUI:
     def on_closing(self):
         if messagebox.askyesno(title="Quit?", message="Do you really want to quit?"):
             self.root.destroy()
-
 
 if __name__ == "__main__":
     GUI()
