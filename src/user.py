@@ -21,20 +21,8 @@ class User:
     def signup(self):
         conn = mysqlconnect()
         cur = conn.cursor()
-        try:
-            cur.execute('INSERT INTO user VALUES(%s, %s, %s, %s, %s)', (self.__username, self.__first_name, self.__last_name, self.__email, self.__password))
-            conn.commit()
-            print('new user added')
-            return True
-        except Exception as e:
-            match e.args[1].split()[5].strip('\''):
-                case 'PRIMARY':
-                    print("Username already exist")
-                case 'UC_email':
-                    print("Email already exist")
-                case _:
-                    print("error occured!")
-            return False
+        cur.execute('INSERT INTO user VALUES(%s, %s, %s, %s, %s)', (self.__username, self.__first_name, self.__last_name, self.__email, self.__password))
+        conn.commit()
         conn.close()
 
     def set_information(self,first_name,last_name,email,password):

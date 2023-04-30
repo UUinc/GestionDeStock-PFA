@@ -35,9 +35,7 @@ class LoginPage(ttk.Frame):
         self.canvas.create_text(int(SCR_HEIGHT/2.63), int(SCR_HEIGHT/1.2), text="STOCK.ME", font=("Livvic Bold", int(SCR_HEIGHT/15)), fill="white", tags="text")
         self.canvas.create_text(int(SCR_HEIGHT/2.63), int(SCR_HEIGHT/1.08), text="Power Up Your Inventory Management: Our App's Got You Covered!", font=("Livvic Medium", int(SCR_HEIGHT/68)), fill="white", tags="text")
 
-
         #Form login
-
         #login page title
         self.pageTitle = ttk.Label(self, text="LOGIN", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/13)))
         #entries labels
@@ -57,59 +55,55 @@ class LoginPage(ttk.Frame):
         self.passwordIcon.image = photo
         #entries
         self.usernameEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=36)
-        self.passwordEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=36, show="*")
+        self.passwordEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=36, show="•")
 
         #login button
         #style button
         s = ttk.Style()
-        s.configure('login_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/48)), padding=(int(SCR_HEIGHT/9), 10), background='#4D5D69', foreground='#FFFFFF', borderwidth=0)
+        s.configure('primary_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/48)), padding=(int(SCR_HEIGHT/9), 10), background='#4D5D69', foreground='#FFFFFF', borderwidth=0)
         #create button
-        self.loginBTN = ttk.Button(self, text="login", style='login_btn.TButton', bootstyle=PRIMARY, command=self.login)
+        self.loginBTN = ttk.Button(self, text="login", style='primary_btn.TButton', bootstyle=PRIMARY, command=self.login)
         #sign up message text
         self.signupMessage = ttk.Label(self, text="Don't have an account?", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/63)))
         #sign up button
         #style button
         s = ttk.Style()
-        s.configure('signup_btn.TButton', font=('Livvic Bold', int(SCR_HEIGHT/64)), background='#FFFFFF', foreground='#4D5D69', borderwidth=0)
-        s.map('signup_btn.TButton', background=[('active', '!disabled', '#FFFFFF')], foreground=[('active', '!disabled', '#4D5D69')])
+        s.configure('secondary_btn.TButton', font=('Livvic Bold', int(SCR_HEIGHT/64)), background='#FFFFFF', foreground='#4D5D69', borderwidth=0)
+        s.map('secondary_btn.TButton', background=[('active', '!disabled', '#FFFFFF')], foreground=[('active', '!disabled', '#4D5D69')])
         #create button
-        self.signupBTN = ttk.Button(self, text="SIGN UP", style='signup_btn.TButton', command=self.signup)
+        self.signupBTN = ttk.Button(self, text="SIGN UP", style='secondary_btn.TButton', command=self.signup)
 
         #set widgets position
         self.pageTitle.place(relx=0.72, rely=0.19, anchor="center")
+        #username
         self.usernameLabel.place(relx=0.615, rely=0.35, anchor="center")
         self.usernameIcon.place(relx=0.84, rely=0.40, anchor="center")
         self.usernameIcon.lift()
         self.usernameEntry.place(relx=0.72, rely=0.4, anchor="center")
+        #password
         self.passwordLabel.place(relx=0.615, rely=0.47, anchor="center")
         self.passwordIcon.place(relx=0.84, rely=0.52, anchor="center")
         self.passwordIcon.lift()
         self.passwordEntry.place(relx=0.72, rely=0.52, anchor="center")
+        #login btn
         self.loginBTN.place(relx=0.72, rely=0.7, anchor="center")
+        #sign up
         self.signupMessage.place(relx=0.692, rely=0.76, anchor="center")
         self.signupBTN.place(relx=0.785, rely=0.76, anchor="center")
 
-        # self.textbox = ttk.Text(self, height=5)
-        # self.textbox.pack(padx=10, pady=10)
-
-        # self.check_state = ttk.IntVar()
-
-        # self.check = ttk.Checkbutton(self, text="Show Messagebox", variable=self.check_state)
-        # self.check.pack(padx=10, pady=10)
-        
-        # self.button = ttk.Button(self, text="Show Message", command=self.show_message)
-        # self.button.pack(padx=10, pady=10)
-
         self.controller = controller
 
-    # def show_message(self):
-    #     print(self.check_state.get())
+    def clear_form(self):
+        self.usernameEntry.delete(0, 'end')
+        self.passwordEntry.delete(0, 'end')
 
     def login(self):
         username = self.usernameEntry.get()
         password = self.passwordEntry.get()
+        
         try:
             if User.login(username, password):
+                self.clear_form()
                 from src.pages.home_page import HomePage
                 self.controller.show_page(HomePage)
             else:
@@ -119,5 +113,6 @@ class LoginPage(ttk.Frame):
             quit()
     
     def signup(self):
+        self.clear_form()
         from src.pages.signup_page import SignupPage
         self.controller.show_page(SignupPage)
