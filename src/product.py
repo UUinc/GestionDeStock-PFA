@@ -1,5 +1,5 @@
-from connect import *
-from utils import *
+from src.connect import *
+from src.utils import *
 
 class Product:
     __product_id = -1

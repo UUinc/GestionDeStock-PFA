@@ -8,7 +8,7 @@ class SettingsPage(ttk.Frame):
         self.label = ttk.Label(self, text="Settings")
         self.label.pack(padx=10, pady=10)
 
-        from pages.stock_page import StockPage
+        from src.pages.stock_page import StockPage
         self.btn = ttk.Button(self, text="Go to STOCK", command=lambda: controller.show_page(StockPage))
         self.btn.pack(padx=10, pady=10)
 

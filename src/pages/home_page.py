@@ -8,7 +8,7 @@ class HomePage(ttk.Frame):
         self.label = ttk.Label(self, text="DASHBOARD")
         self.label.pack(padx=10, pady=10)
 
-        from pages.settings_page import SettingsPage
+        from src.pages.settings_page import SettingsPage
         self.btn = ttk.Button(self, text="Go to SETTINGS", command=lambda: controller.show_page(SettingsPage))
         self.btn.pack(padx=10, pady=10)
 

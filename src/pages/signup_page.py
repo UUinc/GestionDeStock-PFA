@@ -8,7 +8,7 @@ class SignupPage(ttk.Frame):
         self.label = ttk.Label(self, text="SIGN UP")
         self.label.pack(padx=10, pady=10)
 
-        from pages.home_page import HomePage
+        from src.pages.home_page import HomePage
         self.btn = ttk.Button(self, text="Go to DASHBOARD", command=lambda: controller.show_page(HomePage))
         self.btn.pack(padx=10, pady=10)
 

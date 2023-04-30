@@ -4,7 +4,7 @@ from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
-from user import User
+from src.user import User
 
 class LoginPage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -14,12 +14,12 @@ class LoginPage(ttk.Frame):
 
         #Background left side
         # Load background image file
-        img = Image.open("../assets/background/background.png")
+        img = Image.open("assets/background/background.png")
         img = img.resize((SCR_HEIGHT, SCR_HEIGHT), Image.Resampling.LANCZOS)
         self.img = ImageTk.PhotoImage(img)
 
         # Load logo file
-        logo_img = Image.open("../assets/icon/logo.png")
+        logo_img = Image.open("assets/icon/logo.png")
         logo_img = logo_img.resize((int(SCR_HEIGHT*0.42), int(SCR_HEIGHT*0.42)), Image.Resampling.LANCZOS)
         self.logo_img = ImageTk.PhotoImage(logo_img)
 
@@ -45,12 +45,12 @@ class LoginPage(ttk.Frame):
         self.passwordLabel = ttk.Label(self, text="password", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
         #entries logos
         # Load logo files
-        username_img = Image.open("../assets/logo/user.png")
+        username_img = Image.open("assets/logo/user.png")
         username_img = username_img.resize((25, 25), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(username_img)
         self.usernameIcon = Label(self, image=photo, bd=0)
         self.usernameIcon.image = photo
-        password_img = Image.open("../assets/logo/padlock.png")
+        password_img = Image.open("assets/logo/padlock.png")
         password_img = password_img.resize((25, 25), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(password_img)
         self.passwordIcon = Label(self, image=photo, bd=0)
@@ -108,13 +108,16 @@ class LoginPage(ttk.Frame):
     def login(self):
         username = self.usernameEntry.get()
         password = self.passwordEntry.get()
-
-        if User.login(username, password):
-            from pages.home_page import HomePage
-            self.controller.show_page(HomePage)
-        else:
-            messagebox.showerror("Error", "Invalid username or password")
+        try:
+            if User.login(username, password):
+                from src.pages.home_page import HomePage
+                self.controller.show_page(HomePage)
+            else:
+                messagebox.showerror("Error", "Invalid username or password")
+        except Exception as e:
+            messagebox.showerror("Error", e.args[1])
+            quit()
     
     def signup(self):
-        from pages.signup_page import SignupPage
+        from src.pages.signup_page import SignupPage
         self.controller.show_page(SignupPage)

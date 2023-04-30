@@ -1,5 +1,5 @@
-from connect import *
-from utils import *
+from src.connect import *
+from src.utils import *
 
 class User:
     def __init__(self, username, first_name, last_name, email, password):
