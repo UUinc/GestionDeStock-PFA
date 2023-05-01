@@ -25,7 +25,7 @@ class GUI:
             page = page_name(self.container, self)
             self.pages[page_name] = page
             page.grid(row=0, column=0, sticky="nsew")
-        self.show_page(LoginPage)
+        self.show_page(HomePage)
 
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.root.mainloop()

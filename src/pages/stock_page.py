@@ -1,3 +1,5 @@
+from tkinter import *
+from PIL import ImageTk, Image
 from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
