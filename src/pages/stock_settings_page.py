@@ -87,9 +87,55 @@ class StockSettingsPage(ttk.Frame):
 
         #Stock Settings page
         #Stock Settings page title
-        self.pageTitle = ttk.Label(self, text="Stock Settings", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/13)))
-
+        self.pageTitle = ttk.Label(self, text="Stock Settings", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/30)))
         #set widgets position
-        self.pageTitle.place(relx=0.72, rely=0.19, anchor="center")
+        self.pageTitle.place(relx=0.22, rely=0.090, anchor="w")
+        #Stock Settings page Subtitle
+        self.pageSubtitle= ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/50)))
+        #set widgets position
+        self.pageSubtitle.place(relx=0.22, rely=0.15, anchor="w")
+        #Hi,user 
+        self.user = ttk.Label(self, text="Hi, User", foreground="#4D5D69", font=("Livvic Light", int(SCR_HEIGHT/50)))
+        self.user.place(relx=0.85, rely=0.090, anchor="w")
+        #user icon
+        user_img = Image.open("assets/logo/user.png")
+        user_img = user_img.resize((50, 50), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(user_img)
+        self.userIcon = Label(self, image=photo, bd=0)
+        self.userIcon.image = photo
+        self.userIcon.place(relx=0.91, rely=0.090, anchor="w")
+        #BODY
+        #stockname section
+        self.stocknameLabel = ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.stocknameLabel.place(relx=0.25, rely=0.25, anchor="w")
+        self.stockname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=61)
+        self.stockname_entry.place(relx=0.25, rely=0.3, anchor="w")
+        #Button save
+        self.save_btn= ttk.Button(self, text="save", style='sidebar_btn.TButton', padding=(10,10),width=20)
+        self.save_btn.place(relx=0.75, rely= 0.3, anchor="w")
+        #username section
+        self.usernameLabel = ttk.Label(self, text="Username", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.usernameLabel.place(relx=0.25, rely=0.35, anchor="w")
+        self.username_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=30)
+        self.username_entry.place(relx=0.25, rely=0.4, anchor="w")
+        #role
+        self.roleLabel = ttk.Label(self, text="Role", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.roleLabel.place(relx=0.5, rely=0.35, anchor="w")
+        self.role= ttk.Combobox(self,width=60,height=10)
+        self.role.place(relx=0.5, rely=0.4, anchor="w")
+        #Button add user
+        self.add_user_btn= ttk.Button(self, text="add user", style='sidebar_btn.TButton', padding=(10,10),width=20)
+        self.add_user_btn.place(relx=0.75, rely= 0.4, anchor="w")
+        #users list section
+
+
+
+
+
+
+
+
+
+
 
         self.controller = controller
