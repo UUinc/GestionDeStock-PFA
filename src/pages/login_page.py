@@ -64,7 +64,7 @@ class LoginPage(ttk.Frame):
         #create button
         self.loginBTN = ttk.Button(self, text="login", style='primary_btn.TButton', bootstyle=PRIMARY, command=self.login)
         #sign up message text
-        self.signupMessage = ttk.Label(self, text="Don't have an account?", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/63)))
+        self.signupMessage = ttk.Label(self, text="Don't have an account?", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/64)))
         #sign up button
         #style button
         s = ttk.Style()
@@ -89,7 +89,7 @@ class LoginPage(ttk.Frame):
         self.loginBTN.place(relx=0.72, rely=0.7, anchor="center")
         #sign up
         self.signupMessage.place(relx=0.692, rely=0.76, anchor="center")
-        self.signupBTN.place(relx=0.785, rely=0.76, anchor="center")
+        self.signupBTN.place(relx=0.78, rely=0.76, anchor="center")
 
         self.controller = controller
 
