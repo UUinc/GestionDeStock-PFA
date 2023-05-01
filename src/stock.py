@@ -66,7 +66,7 @@ class Stock:
         
         conn.close()
 
-    def update_stock_description(self,description):
+    def update_stock_description(self):
         conn = mysqlconnect()
         cur = conn.cursor()
 

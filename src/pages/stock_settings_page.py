@@ -3,6 +3,8 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+from src.connect import *
+from src.user import *
 
 class StockSettingsPage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -91,7 +93,7 @@ class StockSettingsPage(ttk.Frame):
         #set widgets position
         self.pageTitle.place(relx=0.22, rely=0.090, anchor="w")
         #Stock Settings page Subtitle
-        self.pageSubtitle= ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/50)))
+        self.pageSubtitle= ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/50)))
         #set widgets position
         self.pageSubtitle.place(relx=0.22, rely=0.15, anchor="w")
         #Hi,user 
@@ -121,17 +123,43 @@ class StockSettingsPage(ttk.Frame):
         #role
         self.roleLabel = ttk.Label(self, text="Role", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
         self.roleLabel.place(relx=0.5, rely=0.35, anchor="w")
-        self.role= ttk.Combobox(self,width=60,height=10)
+        self.role= ttk.Combobox(self,width=60)
         self.role.place(relx=0.5, rely=0.4, anchor="w")
         #Button add user
         self.add_user_btn= ttk.Button(self, text="add user", style='sidebar_btn.TButton', padding=(10,10),width=20)
         self.add_user_btn.place(relx=0.75, rely= 0.4, anchor="w")
         #users list section
+        self.list= ttk.Label(self, text="users list", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/60)))
+        self.list.place(relx=0.25, rely=0.50, anchor="w")
+        #list items
+        #username
+        self.list_username= ttk.Label(self, text="Username", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
+        self.list_username.place(relx=0.28, rely=0.55, anchor="w")
+        #email
+        self.list_email= ttk.Label(self, text="Email", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
+        self.list_email.place(relx=0.42, rely=0.55, anchor="w")
+        #role
+        self.list_role= ttk.Label(self, text="Role", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
+        self.list_role.place(relx=0.65, rely=0.55, anchor="w")
+        #actions
+        self.list_actions= ttk.Label(self, text="Actions", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
+        self.list_actions.place(relx=0.80, rely=0.55, anchor="w")
 
 
-
-
-
+        
+    
+        def get_email(self):
+            conn = mysqlconnect()
+            cur = conn.cursor()
+            username = self.username_entry.get()
+            # if username exists
+            cur.execute('SELECT * FROM user WHERE username = %s', username)
+            result = cur.fetchone()
+            email = User(result[3])
+            conn.close()
+            return email
+        
+        
 
 
 
