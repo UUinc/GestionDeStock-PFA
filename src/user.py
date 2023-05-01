@@ -1,5 +1,6 @@
 from src.connect import *
 from src.utils import *
+import re
 
 class User:
     def __init__(self, username, first_name, last_name, email, password):
@@ -40,7 +41,36 @@ class User:
         user = User(result[0], result[1], result[2], result[3])
         conn.close()
         return user
+    
+    ####verification
+    def verif_user(username):
+        exp = "^[a-z A-Z 0-9]+[_]?[a-z A-Z 0-9]$"
+        if re.search(exp, username):
+            print(f"{username} Valid")
+        else:
+            print(f"{username} Not valid")
+             
+    
+    def verif_email(email):
+        exp = "^[a-z 0-9]+[\_.]?[a-z 0-9]+[@]\w+[.]\w{2,3}$"
+        if re.search(exp, email ):
+            print(f"{email } Valid")
+        else:
+            print(f"{email } Not valid")
+            
 
+    def verif_password(password):
+       if(len(password)<8):
+            print("Password must be 8 character long")
+
+       if not re.search('[a-z] && [A-Z] && [0-9] && [/$%#@._]', password):
+            print("Not valid,password must have [a-z] && [A-Z] && [0-9] && [/$%#@._] ") 
+       else:
+             print("Valid")
+    
+    
+    
+    
 # u = User('yousra.eb','yousra','elberraq','yous@gmail.com','123')
 # u.signup()
 
