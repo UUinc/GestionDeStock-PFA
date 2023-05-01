@@ -30,7 +30,7 @@ class SignupPage(ttk.Frame):
         # Place image at bottom-left corner with canvas width and image height
         self.canvas.create_image(0, SCR_HEIGHT, image=self.img, anchor="sw", tags="bg")
         # Add logo image on top of background image
-        self.canvas.create_image(SCR_HEIGHT*0.15, SCR_HEIGHT*0.35, image=self.logo_img, anchor="nw")
+        self.canvas.create_image(int(SCR_HEIGHT*0.15), int(SCR_HEIGHT*0.35), image=self.logo_img, anchor="nw")
         # Add text on top of the image
         self.canvas.create_text(int(SCR_HEIGHT/2.63), int(SCR_HEIGHT/1.2), text="STOCK.ME", font=("Livvic Bold", int(SCR_HEIGHT/15)), fill="white", tags="text")
         self.canvas.create_text(int(SCR_HEIGHT/2.63), int(SCR_HEIGHT/1.08), text="Power Up Your Inventory Management: Our App's Got You Covered!", font=("Livvic Medium", int(SCR_HEIGHT/68)), fill="white", tags="text")
