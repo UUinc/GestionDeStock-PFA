@@ -43,11 +43,13 @@ class LoginPage(ttk.Frame):
         self.passwordLabel = ttk.Label(self, text="password", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
         #entries logos
         # Load logo files
+        #user icon
         username_img = Image.open("assets/logo/user.png")
         username_img = username_img.resize((25, 25), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(username_img)
         self.usernameIcon = Label(self, image=photo, bd=0)
         self.usernameIcon.image = photo
+        #padlock icon
         password_img = Image.open("assets/logo/padlock.png")
         password_img = password_img.resize((25, 25), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(password_img)
@@ -104,8 +106,10 @@ class LoginPage(ttk.Frame):
         try:
             if User.login(username, password):
                 self.clear_form()
+                #save username to work with it in other pages
+                self.controller.set_username(username)
                 from src.pages.home_page import HomePage
-                self.controller.show_page(HomePage)
+                self.controller.update_page(HomePage)
             else:
                 messagebox.showerror("Error", "Invalid username or password")
         except Exception as e:

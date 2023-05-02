@@ -17,6 +17,8 @@ class GUI:
         self.root.state('zoomed')
         self.root.resizable(False, False)
 
+        self.__username = ""
+
         self.container = ttk.Frame(self.root)
         self.container.pack(fill="both", expand=True)
 
@@ -25,7 +27,7 @@ class GUI:
             page = page_name(self.container, self)
             self.pages[page_name] = page
             page.grid(row=0, column=0, sticky="nsew")
-        self.show_page(HomePage)
+        self.show_page(LoginPage)
 
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.root.mainloop()
@@ -33,6 +35,18 @@ class GUI:
     def show_page(self, page_name):
         page = self.pages[page_name]
         page.tkraise()
+
+    def update_page(self, page_name):
+        page = page_name(self.container, self)
+        self.pages[page_name] = page
+        page.grid(row=0, column=0, sticky="nsew")
+        page.tkraise()
+
+    def set_username(self, username):
+        self.__username = username
+
+    def get_username(self):
+        return self.__username
 
     def on_closing(self):
         if messagebox.askyesno(title="Quit?", message="Do you really want to quit?"):

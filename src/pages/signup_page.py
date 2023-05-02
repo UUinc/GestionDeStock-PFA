@@ -137,8 +137,9 @@ class SignupPage(ttk.Frame):
         try:
             u.signup()
             self.clear_form()
+            self.controller.set_username(username)
             from src.pages.home_page import HomePage
-            self.controller.show_page(HomePage)
+            self.controller.update_page(HomePage)
         except Exception as e:
             errorMessage = e.args[1]
             match e.args[1].split()[5].strip('\''):
