@@ -44,7 +44,7 @@ class StockSettingsPage(ttk.Frame):
         from src.pages.home_page import HomePage
         self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_btn.TButton', padding=(120, 10, 131, 10), command=lambda: controller.show_page(HomePage))
         from src.pages.stock_settings_page import StockSettingsPage
-        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_btn.TButton', padding=(120, 10, 150, 10), command=lambda: controller.show_page(StockSettingsPage))
+        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_disabled_btn.TButton', padding=(120, 10, 150, 10), command=lambda: controller.show_page(StockSettingsPage))
         from src.pages.settings_page import SettingsPage
         self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.show_page(SettingsPage))
         from src.pages.settings_page import SettingsPage
