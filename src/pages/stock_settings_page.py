@@ -35,20 +35,20 @@ class StockSettingsPage(ttk.Frame):
 
         #Sidebar buttons
         s = ttk.Style()
-        s.configure('sidebar_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), background='#9DAAAF', foreground='#38393B', borderwidth=0)
-        s.map('sidebar_btn.TButton', background=[('active', '!disabled', '#7d9198')], foreground=[('active', '!disabled', '#38393B')])
+        s.configure('sidebar_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), background='#BDC3C6', foreground='#38393B', borderwidth=0)
+        s.map('sidebar_btn.TButton', background=[('active', '!disabled', '#A7AEB1')], foreground=[('active', '!disabled', '#38393B')])
         s = ttk.Style()
-        s.configure('sidebar_disabled_btn.TButton', font=('Livvic Bold', int(SCR_HEIGHT/64)), background='#9DAAAF', foreground='#38393B', borderwidth=0)
-        s.map('sidebar_disabled_btn.TButton', background=[('active', '!disabled', '#7d9198')], foreground=[('active', '!disabled', '#38393B')])
+        s.configure('sidebar_disabled_btn.TButton', font=('Livvic Bold', int(SCR_HEIGHT/64)), background='#BDC3C6', foreground='#38393B', borderwidth=0)
+        s.map('sidebar_disabled_btn.TButton', background=[('active', '!disabled', '#A7AEB1')], foreground=[('active', '!disabled', '#38393B')])
         #create buttons
         from src.pages.home_page import HomePage
-        self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_btn.TButton', padding=(120, 10, 131, 10), command=lambda: controller.show_page(HomePage))
+        self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_btn.TButton', padding=(120, 10, 131, 10), command=lambda: controller.update_page(HomePage))
         from src.pages.stock_settings_page import StockSettingsPage
-        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_disabled_btn.TButton', padding=(120, 10, 145, 10), command=lambda: controller.show_page(StockSettingsPage))
+        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_disabled_btn.TButton', padding=(120, 10, 145, 10), command=lambda: controller.update_page(StockSettingsPage))
         from src.pages.settings_page import SettingsPage
-        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.show_page(SettingsPage))
+        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(SettingsPage))
         from src.pages.settings_page import SettingsPage
-        self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.show_page(SettingsPage))
+        self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.update_page(SettingsPage))
         
         #Sidebar logos
         #Dashboard icon
@@ -89,23 +89,29 @@ class StockSettingsPage(ttk.Frame):
 
         #Stock Settings page
         #Stock Settings page title
-        self.pageTitle = ttk.Label(self, text="Stock Settings", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/30)))
+        self.pageTitle = ttk.Label(self, text="Stock Settings", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/30)))
         #set widgets position
-        self.pageTitle.place(relx=0.22, rely=0.090, anchor="w")
+        self.pageTitle.place(relx=0.23, rely=0.08, anchor="w")
+        
         #Stock Settings page Subtitle
         self.pageSubtitle= ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/50)))
         #set widgets position
-        self.pageSubtitle.place(relx=0.22, rely=0.15, anchor="w")
-        #Hi,user 
-        self.user = ttk.Label(self, text="Hi, User", foreground="#4D5D69", font=("Livvic Light", int(SCR_HEIGHT/50)))
-        self.user.place(relx=0.85, rely=0.090, anchor="w")
-        #user icon
-        user_img = Image.open("assets/logo/user.png")
-        user_img = user_img.resize((50, 50), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(user_img)
-        self.userIcon = Label(self, image=photo, bd=0)
-        self.userIcon.image = photo
-        self.userIcon.place(relx=0.91, rely=0.090, anchor="w")
+        self.pageSubtitle.place(relx=0.23, rely=0.15, anchor="w")
+        #User information
+        #user greeting
+        username = controller.get_username()
+        user = User.get_information(username)
+        fullname = user.get_firstname()
+        self.usergreetingTitle = ttk.Label(self, text="Hi, "+fullname, foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/38)))
+        #user image
+        profile_img = Image.open("assets/logo/profile.png")
+        profile_img = profile_img.resize((75, 75), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(profile_img)
+        self.profileIcon = Label(self, image=photo, bd=0)
+        self.profileIcon.image = photo
+        #user information widgets position
+        self.usergreetingTitle.place(relx=0.92, rely=0.08, anchor="e")
+        self.profileIcon.place(relx=0.95, rely=0.08, anchor="center")
         #BODY
         #stockname section
         self.stocknameLabel = ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))

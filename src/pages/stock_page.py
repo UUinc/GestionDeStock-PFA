@@ -11,7 +11,7 @@ class StockPage(ttk.Frame):
         self.label.pack(padx=10, pady=10)
 
         from src.pages.stock_settings_page import StockSettingsPage
-        self.btn = ttk.Button(self, text="Go to STOCK SETTINGS", command=lambda: controller.show_page(StockSettingsPage))
+        self.btn = ttk.Button(self, text="Go to STOCK SETTINGS", command=lambda: controller.update_page(StockSettingsPage))
         self.btn.pack(padx=10, pady=10)
 
         self.controller = controller
