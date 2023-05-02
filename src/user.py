@@ -38,43 +38,37 @@ class User:
         cur = conn.cursor()
         cur.execute('SELECT * FROM user WHERE username = %s', username)
         result = cur.fetchone()
-        user = User(result[0], result[1], result[2], result[3])
+        try:
+            user = User(result[0], result[1], result[2], result[3], result[4])
+        except:
+            user = User("", "", "", "", "")
         conn.close()
         return user
     
-    ####verification
+    def get_firstname(self):
+        return self.__first_name
+    
+    def get_lastname(self):
+        return self.__last_name
+
+    def get_email(self):
+        return self.__email
+
+    #Form validation
     def verif_user(username):
-        exp = "^[a-z A-Z 0-9]+[_]?[a-z A-Z 0-9]$"
-        if re.search(exp, username):
-            print(f"{username} Valid")
+        if re.match(r"^[a-zA-Z0-9_]{3,20}$", username):
+            print(f"{username} is a valid username")
         else:
-            print(f"{username} Not valid")
-             
-    
+            print(f"{username} is not a valid username")
+                
     def verif_email(email):
-        exp = "^[a-z 0-9]+[\_.]?[a-z 0-9]+[@]\w+[.]\w{2,3}$"
-        if re.search(exp, email ):
-            print(f"{email } Valid")
+        if re.match(r"^(?=.{1,256}$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
+            print(f"{email} is a valid email")
         else:
-            print(f"{email } Not valid")
+            print(f"{email} is not a valid email")
             
-
     def verif_password(password):
-       if(len(password)<8):
-            print("Password must be 8 character long")
-
-       if not re.search('[a-z] && [A-Z] && [0-9] && [/$%#@._]', password):
-            print("Not valid,password must have [a-z] && [A-Z] && [0-9] && [/$%#@._] ") 
-       else:
-             print("Valid")
-    
-    
-    
-    
-# u = User('yousra.eb','yousra','elberraq','yous@gmail.com','123')
-# u.signup()
-
-# if User.login('yousra.eb','123'):
-#     print("Welcome")
-# else:
-#     print("Incorrect credentials")
+        if re.match(r"^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[/$%#@._!])[\w\d/$%#@._!]{8,20}$", password):
+            print("Valid")
+        else:
+            print("Not valid,password must have [a-z] && [A-Z] && [0-9] && [/$%#@._!] and between 8 and 20 characters") 

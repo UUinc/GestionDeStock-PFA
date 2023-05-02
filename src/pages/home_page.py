@@ -4,6 +4,8 @@ from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
+from src.user import User
+
 class HomePage(ttk.Frame):
     def __init__(self, parent, controller):
         ttk.Frame.__init__(self, parent)
@@ -34,11 +36,11 @@ class HomePage(ttk.Frame):
 
         #Sidebar buttons
         s = ttk.Style()
-        s.configure('sidebar_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), background='#9DAAAF', foreground='#38393B', borderwidth=0)
-        s.map('sidebar_btn.TButton', background=[('active', '!disabled', '#7d9198')], foreground=[('active', '!disabled', '#38393B')])
+        s.configure('sidebar_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), background='#BDC3C6', foreground='#38393B', borderwidth=0)
+        s.map('sidebar_btn.TButton', background=[('active', '!disabled', '#A7AEB1')], foreground=[('active', '!disabled', '#38393B')])
         s = ttk.Style()
-        s.configure('sidebar_disabled_btn.TButton', font=('Livvic Bold', int(SCR_HEIGHT/64)), background='#9DAAAF', foreground='#38393B', borderwidth=0)
-        s.map('sidebar_disabled_btn.TButton', background=[('active', '!disabled', '#7d9198')], foreground=[('active', '!disabled', '#38393B')])
+        s.configure('sidebar_disabled_btn.TButton', font=('Livvic Bold', int(SCR_HEIGHT/64)), background='#BDC3C6', foreground='#38393B', borderwidth=0)
+        s.map('sidebar_disabled_btn.TButton', background=[('active', '!disabled', '#A7AEB1')], foreground=[('active', '!disabled', '#38393B')])
         #create buttons
         self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_disabled_btn.TButton', padding=(120, 10, 125, 10))
         from src.pages.stock_settings_page import StockSettingsPage
@@ -86,9 +88,69 @@ class HomePage(ttk.Frame):
 
         #Dashboard page
         #Dashborad page title
-        self.pageTitle = ttk.Label(self, text="Dashboard", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/13)))
+        self.pageTitle = ttk.Label(self, text="Dashboard", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/30)))
+        #User information
+        #user greeting
+        username = controller.get_username()
+        user = User.get_information(username)
+        fullname = user.get_firstname()
+        self.usergreetingTitle = ttk.Label(self, text="Hi, "+fullname, foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/38)))
+        #user image
+        profile_img = Image.open("assets/logo/profile.png")
+        profile_img = profile_img.resize((75, 75), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(profile_img)
+        self.profileIcon = Label(self, image=photo, bd=0)
+        self.profileIcon.image = photo
+        #searchbar
+        #search icon
+        search_img = Image.open("assets/logo/search.png")
+        search_img = search_img.resize((25, 25), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(search_img)
+        self.searchIcon = Label(self, image=photo, bd=0)
+        self.searchIcon.image = photo
+        #entry
+        self.searchbarEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=46)
+        #Add stock button
+        s = ttk.Style()
+        s.configure('addstock_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), padding=(18, 9), background='#4D5D69', foreground='#FFFFFF', borderwidth=0)
+        #create button
+        self.addStockBTN = ttk.Button(self, text="Add stock", style='addstock_btn.TButton', bootstyle=PRIMARY, command=self.add_stock)
+        #stocks list title
+        self.stocklistTitle = ttk.Label(self, text="Stocks", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/60)))
+
+        # create a Treeview widget including all user's stocks
+        style = ttk.Style()
+        style.configure('stock.Treeview', rowheight=30, padding=5)
+        self.tree = ttk.Treeview(self, columns=('col1', 'col2'), show='headings', style='stock.Treeview')
+
+        # set the column headings
+        self.tree.heading('col1', text='Column 1', anchor='w')
+        self.tree.heading('col2', text='Column 2', anchor='w')
+
+        # add some data to the Treeview
+        self.tree.insert('', '0', values=('Value 1.1', 'Value 1.2'))
+        self.tree.insert('', '1', values=('Value 2.1', 'Value 2.2'))
+        self.tree.insert('', '2', values=('Value 3.1', 'Value 3.2'))
+
+        # set the column widths
+        self.tree.column('col1', width=100)
+        self.tree.column('col2', width=100)
+
 
         #set widgets position
-        self.pageTitle.place(relx=0.72, rely=0.19, anchor="center")
+        self.pageTitle.place(relx=0.3, rely=0.08, anchor="center")
+        self.usergreetingTitle.place(relx=0.92, rely=0.08, anchor="e")
+        self.profileIcon.place(relx=0.95, rely=0.08, anchor="center")
+        self.searchIcon.place(relx=0.56, rely=0.19, anchor="center")
+        self.searchIcon.lift()
+        self.searchbarEntry.place(relx=0.405, rely=0.19, anchor="center")
+        self.addStockBTN.place(relx=0.615, rely=0.19, anchor="center")
+        self.stocklistTitle.place(relx=0.25, rely=0.26, anchor="center")
+        # place the Treeview widget into the tkinter window
+        self.tree.place(relx=0.45, rely=0.4, anchor="w")
 
         self.controller = controller
+
+    
+    def add_stock():
+        pass
