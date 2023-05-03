@@ -96,25 +96,25 @@ class StockSettingsPage(ttk.Frame):
         #Stock Settings page Subtitle
         self.pageSubtitle= ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/50)))
         #set widgets position
-        self.pageSubtitle.place(relx=0.22, rely=0.15, anchor="w")
+        self.pageSubtitle.place(relx=0.23, rely=0.15, anchor="w")
         #Hi,user 
         username = controller.get_username()
         user = User.get_information(username)
         firstname = user.get_firstname()
         self.user = ttk.Label(self, text="Hi, "+firstname, foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/38)))
-        self.user.place(relx=0.85, rely=0.090, anchor="w")
+        self.user.place(relx=0.92, rely=0.08, anchor="e")
         #user icon
         user_img = Image.open("assets/logo/profile.png")
         user_img = user_img.resize((75, 75), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(user_img)
         self.userIcon = Label(self, image=photo, bd=0)
         self.userIcon.image = photo
-        self.userIcon.place(relx=0.93, rely=0.090, anchor="w")
+        self.userIcon.place(relx=0.95, rely=0.08, anchor="center")
         #BODY
         #stockname section
         self.stocknameLabel = ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
         self.stocknameLabel.place(relx=0.25, rely=0.25, anchor="w")
-        self.stockname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=61)
+        self.stockname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=62)
         self.stockname_entry.place(relx=0.25, rely=0.3, anchor="w")
         #Button save
         self.save_btn= ttk.Button(self, text="save", style='sidebar_btn.TButton', padding=(10,10),width=20)
@@ -126,9 +126,10 @@ class StockSettingsPage(ttk.Frame):
         self.username_entry.place(relx=0.25, rely=0.4, anchor="w")
         #role
         self.roleLabel = ttk.Label(self, text="Role", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.roleLabel.place(relx=0.5, rely=0.35, anchor="w")
-        self.role= ttk.Combobox(self,width=60)
-        self.role.place(relx=0.5, rely=0.4, anchor="w")
+        self.roleLabel.place(relx=0.49, rely=0.35, anchor="w")
+        self.role= ttk.Combobox(self,width=28,values=["edit","view"],height=50,font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.role.place(relx=0.49, rely=0.4, anchor="w",height=50)
+        self.role.set("choose a role")
         #Button add user
         self.add_user_btn= ttk.Button(self, text="add user", style='sidebar_btn.TButton', padding=(10,10),width=20)
         self.add_user_btn.place(relx=0.75, rely= 0.4, anchor="w")
@@ -136,38 +137,26 @@ class StockSettingsPage(ttk.Frame):
         self.list= ttk.Label(self, text="users list", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/60)))
         self.list.place(relx=0.25, rely=0.50, anchor="w")
         #list items
-        #username
-        self.list_username= ttk.Label(self, text="Username", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
-        self.list_username.place(relx=0.28, rely=0.55, anchor="w")
-        #email
-        self.list_email= ttk.Label(self, text="Email", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
-        self.list_email.place(relx=0.42, rely=0.55, anchor="w")
-        #role
-        self.list_role= ttk.Label(self, text="Role", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
-        self.list_role.place(relx=0.65, rely=0.55, anchor="w")
-        #actions
-        self.list_actions= ttk.Label(self, text="Actions", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
-        self.list_actions.place(relx=0.80, rely=0.55, anchor="w")
+        style = ttk.Style()
+        style.configure('userslist.Treeview', rowheight=30, padding=5, font=("Livvic Regular", 12))
+        # configure the Treeview heading style
+        style.configure("userslist.Treeview.Heading", font=("Livvic Medium", 14), stretch=False)
+        #items
+        self.tree = ttk.Treeview(self, columns=("Username", "Email", "Role", "Action"), show='headings', style='userslist.Treeview')
+        self.tree.heading("Username", text="Username", anchor="w")
+        self.tree.heading("Email", text="Email", anchor="w")
+        self.tree.heading("Role", text="Role", anchor="w")
+        self.tree.heading("Action", text="Action", anchor="w")
+        self.tree.column('Username', width=300)
+        self.tree.column('Email', width=400)
+        self.tree.column('Role', width=400)
+        self.tree.column('Action', width=120)
+        self.tree.place(relx=0.25, rely=0.70, anchor="w")
+
 
 
         
     
-        def get_email(self):
-            conn = mysqlconnect()
-            cur = conn.cursor()
-            username = self.username_entry.get()
-            # if username exists
-            cur.execute('SELECT * FROM user WHERE username = %s', username)
-            result = cur.fetchone()
-            email = User(result[3])
-            conn.close()
-            return email
         
-        
-
-
-
-
-
-
+    
         self.controller = controller
