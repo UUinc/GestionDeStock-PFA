@@ -91,10 +91,11 @@ class Stock:
         
         conn.close()
 
-    def delete_stock(self):
+    @staticmethod
+    def delete_stock(stock_id):
         conn = mysqlconnect()
         cur = conn.cursor()
-        cur.execute('DELETE FROM stock WHERE stock_id = %s', self.__stock_id)
+        cur.execute('DELETE FROM stock WHERE stock_id = %s', stock_id)
         conn.commit()
         print('stock deleted')
         conn.close()

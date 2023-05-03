@@ -51,7 +51,8 @@ class HomePage(ttk.Frame):
         self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(SettingsPage))
         from src.pages.settings_page import SettingsPage
         self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.update_page(SettingsPage))
-        
+        from src.pages.login_page import LoginPage
+        self.logout_sidebar_btn = ttk.Button(self, text="Logout", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.show_page(LoginPage))
         #Sidebar logos
         #Dashboard icon
         home_img = Image.open("assets/logo/home.png")
@@ -77,6 +78,12 @@ class HomePage(ttk.Frame):
         photo = ImageTk.PhotoImage(settings_img)
         self.settingsIcon = Label(self, image=photo, bd=0)
         self.settingsIcon.image = photo
+        #Logout icon
+        logout_img = Image.open("assets/logo/logout.png")
+        logout_img = logout_img.resize((25, 25), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(logout_img)
+        self.logoutIcon = Label(self, image=photo, bd=0)
+        self.logoutIcon.image = photo
 
         #set sidebar buttons position
         self.home_sidebar_btn.place(relx=0, rely=0.2, anchor="w")
@@ -87,6 +94,8 @@ class HomePage(ttk.Frame):
         self.notificationIcon.place(relx=0.038, rely=0.3, anchor="w")
         self.settings_sidebar_btn.place(relx=0, rely=0.35, anchor="w")
         self.settingsIcon.place(relx=0.038, rely=0.35, anchor="w")
+        self.logout_sidebar_btn.place(relx=0, rely=0.4, anchor="w")
+        self.logoutIcon.place(relx=0.038, rely=0.4, anchor="w")
 
         #Dashboard page
         #Dashborad page title
@@ -189,7 +198,13 @@ class HomePage(ttk.Frame):
             elif column == "#6":
                 print("edit: "+id_value)
             elif column == "#7":
-                print("delete: "+id_value)
+                ownership = Ownership.get_ownership(self.username, id_value)
+                print(ownership.get_role())
+                if ownership.get_role() == 'edit':
+                    Stock.delete_stock(id_value)
+                    self.controller.update_page(HomePage)
+                else:
+                    messagebox.showerror("Error", "Unable to delete stock. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
 
     def clear_form(self):
         self.stocknameEntry.delete(0, 'end')
