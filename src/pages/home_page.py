@@ -154,6 +154,14 @@ class HomePage(ttk.Frame):
         self.tree.heading("Action", text="Action", anchor="w")
         self.tree.heading("", text="")
 
+        self.tree.column("ID", width=80)
+        self.tree.column("Stock Name", width=220)
+        self.tree.column("Description", width=400)
+        self.tree.column("Creation Date", width=250)
+        self.tree.column("Date Modified", width=250)
+        self.tree.column("Action", width=80)
+        self.tree.column("", width=90)
+
         #display all user's stocks
         stocks = Stock.get_stocks(self.username)
         for stock in stocks:
@@ -183,13 +191,6 @@ class HomePage(ttk.Frame):
 
     def add_row(self, id, stockname, description, creation_date, modified_date):
         item_id = self.tree.insert("", "end", values=(id, stockname, description, creation_date, modified_date, "Edit", "Delete"))
-        self.tree.column("ID", width=80)
-        self.tree.column("Stock Name", width=220)
-        self.tree.column("Description", width=400)
-        self.tree.column("Creation Date", width=250)
-        self.tree.column("Date Modified", width=250)
-        self.tree.column("Action", width=80)
-        self.tree.column("", width=90)
 
     def on_click(self, event):
         item_id = self.tree.identify_row(event.y)

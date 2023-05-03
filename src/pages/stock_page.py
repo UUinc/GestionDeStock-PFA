@@ -153,6 +153,18 @@ class StockPage(ttk.Frame):
         self.tree.heading("Action", text="Action", anchor="w")
         self.tree.heading("", text="")
 
+        #max size = 1370
+        self.tree.column("ID", width=50)
+        self.tree.column("Name", width=180)
+        self.tree.column("Description", width=290)
+        self.tree.column("Unit Price", width=110)
+        self.tree.column("Quantity", width=110)
+        self.tree.column("Status", width=130)
+        self.tree.column("Entry Date", width=180)
+        self.tree.column("Release Date", width=180)
+        self.tree.column("Action", width=70)
+        self.tree.column("", width=70)
+
         #display all user's stocks
         products = Product.get_products(self.stock_id)
         for product in products:
@@ -187,17 +199,6 @@ class StockPage(ttk.Frame):
 
     def add_row(self, id, name, description, unit_price, quantity, threshold, entry_date, release_date):
         item_id = self.tree.insert("", "end", values=(id, name, description, unit_price, quantity, self.get_status(quantity, threshold), entry_date, release_date, "Edit", "Delete"))
-        self.tree.column("ID", width=50)
-        self.tree.column("Name", width=180)
-        self.tree.column("Description", width=290)
-        self.tree.column("Unit Price", width=110)
-        self.tree.column("Quantity", width=110)
-        self.tree.column("Status", width=130)
-        self.tree.column("Entry Date", width=180)
-        self.tree.column("Release Date", width=180)
-        self.tree.column("Action", width=70)
-        self.tree.column("", width=70)
-        #max size = 1370
 
     def on_click(self, event):
         item_id = self.tree.identify_row(event.y)
