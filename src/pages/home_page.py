@@ -44,11 +44,11 @@ class HomePage(ttk.Frame):
         #create buttons
         self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_disabled_btn.TButton', padding=(120, 10, 125, 10))
         from src.pages.stock_settings_page import StockSettingsPage
-        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_btn.TButton', padding=(120, 10, 150, 10), command=lambda: controller.show_page(StockSettingsPage))
+        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_btn.TButton', padding=(120, 10, 150, 10), command=lambda: controller.update_page(StockSettingsPage))
         from src.pages.settings_page import SettingsPage
-        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.show_page(SettingsPage))
+        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(SettingsPage))
         from src.pages.settings_page import SettingsPage
-        self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.show_page(SettingsPage))
+        self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.update_page(SettingsPage))
         
         #Sidebar logos
         #Dashboard icon
@@ -120,25 +120,30 @@ class HomePage(ttk.Frame):
 
         # create a Treeview widget including all user's stocks
         style = ttk.Style()
-        style.configure('stock.Treeview', rowheight=30, padding=5)
-        self.tree = ttk.Treeview(self, columns=('col1', 'col2'), show='headings', style='stock.Treeview')
+        style.configure('stock.Treeview', rowheight=30, padding=5, font=("Livvic Regular", 12))
+        # configure the Treeview heading style
+        style.configure("stock.Treeview.Heading", font=("Livvic Medium", 14), stretch=False)
+         # Create treeview
+        self.tree = ttk.Treeview(self, columns=("ID", "Stock Name", "Description", "Creation Date", "Date Modified", "Action", ""), show='headings', style='stock.Treeview')
+        self.tree.heading("ID", text="ID", anchor="w")
+        self.tree.heading("Stock Name", text="Stock Name", anchor="w")
+        self.tree.heading("Description", text="Description", anchor="w")
+        self.tree.heading("Creation Date", text="Creation Date", anchor="w")
+        self.tree.heading("Date Modified", text="Date Modified", anchor="w")
+        self.tree.heading("Action", text="Action", anchor="w")
+        self.tree.heading("", text="")
 
-        # set the column headings
-        self.tree.heading('col1', text='Column 1', anchor='w')
-        self.tree.heading('col2', text='Column 2', anchor='w')
+        # Add sample rows
+        self.add_row(1, "IT", "all IT accessories", "16-04-2023 10:30:55", "11-04-2023 10:30:55")
+        self.add_row(2, "IT2", "all IT 2", "17-04-2023 10:30:55", "15-04-2023 10:30:55")
+        self.add_row(3, "IT3", "all IT 3", "18-04-2023 10:30:55", "14-04-2023 10:30:55")
+        self.add_row(4, "IT4", "all IT 4", "19-04-2023 10:30:55", "13-04-2023 10:30:55")
+        self.add_row(5, "IT5", "all IT 5", "20-04-2023 10:30:55", "12-04-2023 10:30:55")
 
-        # add some data to the Treeview
-        self.tree.insert('', '0', values=('Value 1.1', 'Value 1.2'))
-        self.tree.insert('', '1', values=('Value 2.1', 'Value 2.2'))
-        self.tree.insert('', '2', values=('Value 3.1', 'Value 3.2'))
-
-        # set the column widths
-        self.tree.column('col1', width=100)
-        self.tree.column('col2', width=100)
-
+        self.tree.bind("<Button-1>", self.on_click)
 
         #set widgets position
-        self.pageTitle.place(relx=0.3, rely=0.08, anchor="center")
+        self.pageTitle.place(relx=0.23, rely=0.08, anchor="w")
         self.usergreetingTitle.place(relx=0.92, rely=0.08, anchor="e")
         self.profileIcon.place(relx=0.95, rely=0.08, anchor="center")
         self.searchIcon.place(relx=0.56, rely=0.19, anchor="center")
@@ -147,10 +152,30 @@ class HomePage(ttk.Frame):
         self.addStockBTN.place(relx=0.615, rely=0.19, anchor="center")
         self.stocklistTitle.place(relx=0.25, rely=0.26, anchor="center")
         # place the Treeview widget into the tkinter window
-        self.tree.place(relx=0.45, rely=0.4, anchor="w")
+        self.tree.place(relx=0.25, rely=0.5, anchor="w")
 
         self.controller = controller
 
-    
+    def add_row(self, id, stockname, description, creation_date, modified_date):
+        item_id = self.tree.insert("", "end", values=(id, stockname, description, creation_date, modified_date, "Edit", "Delete"))
+        self.tree.column("ID", width=60)
+        self.tree.column("Stock Name", width=200)
+        self.tree.column("Description", width=400)
+        self.tree.column("Creation Date", width=250)
+        self.tree.column("Date Modified", width=250)
+        self.tree.column("Action", width=80)
+        self.tree.column("", width=90)
+
+    def on_click(self, event):
+        item_id = self.tree.identify_row(event.y)
+        if item_id:
+            column = self.tree.identify_column(event.x)
+            if column == "#3":
+                id_value = self.tree.item(item_id, "values")[0]
+                print("edit: "+id_value)
+            if column == "#4":
+                id_value = self.tree.item(item_id, "values")[0]
+                print("delete: "+id_value)
+
     def add_stock():
         pass
