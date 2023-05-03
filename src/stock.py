@@ -17,9 +17,12 @@ class Stock:
         stock += f" last edit: ({self.__last_edit})\n"
         return stock
     
-    #setters
+    #setters and getters
     def set_stock_id(self, id):
         self.__stock_id = id
+
+    def get_stock_id(self):
+        return self.__stock_id
 
     def set_name(self, name):
         self.__name = name
@@ -52,6 +55,15 @@ class Stock:
         stock.set_stock_id(result[0])
         conn.close()
         return stock
+    
+    @staticmethod
+    def get_stocks(username):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute('SELECT s.* FROM stockownership AS o JOIN stock AS s ON o.stock_id = s.stock_id WHERE o.username = %s', username)
+        result = cur.fetchall()
+        conn.close()
+        return result
 
     def update_stock_name(self):
         conn = mysqlconnect()

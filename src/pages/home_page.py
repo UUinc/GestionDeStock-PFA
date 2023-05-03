@@ -5,6 +5,8 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
 from src.user import User
+from src.stock import Stock
+from src.ownership import Ownership
 
 class HomePage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -91,8 +93,8 @@ class HomePage(ttk.Frame):
         self.pageTitle = ttk.Label(self, text="Dashboard", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/30)))
         #User information
         #user greeting
-        username = controller.get_username()
-        user = User.get_information(username)
+        self.username = controller.get_username()
+        user = User.get_information(self.username)
         fullname = user.get_firstname()
         self.usergreetingTitle = ttk.Label(self, text="Hi, "+fullname, foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/38)))
         #user image
@@ -110,13 +112,19 @@ class HomePage(ttk.Frame):
         self.searchIcon.image = photo
         #entry
         self.searchbarEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=46)
+        #stocks list title
+        self.stocklistTitle = ttk.Label(self, text="Stocks", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/60)))
+        #add stock
+        self.stocknameLabel = ttk.Label(self, text="stock name", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
+        self.descriptionLabel = ttk.Label(self, text="description", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
+        #entries
+        self.stocknameEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=20)
+        self.descriptionEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=30)
         #Add stock button
         s = ttk.Style()
         s.configure('addstock_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), padding=(18, 9), background='#4D5D69', foreground='#FFFFFF', borderwidth=0)
         #create button
         self.addStockBTN = ttk.Button(self, text="Add stock", style='addstock_btn.TButton', bootstyle=PRIMARY, command=self.add_stock)
-        #stocks list title
-        self.stocklistTitle = ttk.Label(self, text="Stocks", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/60)))
 
         # create a Treeview widget including all user's stocks
         style = ttk.Style()
@@ -133,12 +141,11 @@ class HomePage(ttk.Frame):
         self.tree.heading("Action", text="Action", anchor="w")
         self.tree.heading("", text="")
 
-        # Add sample rows
-        self.add_row(1, "IT", "all IT accessories", "16-04-2023 10:30:55", "11-04-2023 10:30:55")
-        self.add_row(2, "IT2", "all IT 2", "17-04-2023 10:30:55", "15-04-2023 10:30:55")
-        self.add_row(3, "IT3", "all IT 3", "18-04-2023 10:30:55", "14-04-2023 10:30:55")
-        self.add_row(4, "IT4", "all IT 4", "19-04-2023 10:30:55", "13-04-2023 10:30:55")
-        self.add_row(5, "IT5", "all IT 5", "20-04-2023 10:30:55", "12-04-2023 10:30:55")
+        #display all user's stocks
+        stocks = Stock.get_stocks(self.username)
+
+        for stock in stocks:
+            self.add_row(stock[0], stock[1], stock[2], stock[3], stock[4])
 
         self.tree.bind("<Button-1>", self.on_click)
 
@@ -149,17 +156,22 @@ class HomePage(ttk.Frame):
         self.searchIcon.place(relx=0.56, rely=0.19, anchor="center")
         self.searchIcon.lift()
         self.searchbarEntry.place(relx=0.405, rely=0.19, anchor="center")
-        self.addStockBTN.place(relx=0.615, rely=0.19, anchor="center")
         self.stocklistTitle.place(relx=0.25, rely=0.26, anchor="center")
-        # place the Treeview widget into the tkinter window
-        self.tree.place(relx=0.25, rely=0.5, anchor="w")
+        #add stock
+        self.stocknameLabel.place(relx=0.23, rely=0.305, anchor="w")
+        self.stocknameEntry.place(relx=0.23, rely=0.345, anchor="w")
+        self.descriptionLabel.place(relx=0.39, rely=0.305, anchor="w")
+        self.descriptionEntry.place(relx=0.39, rely=0.345, anchor="w")
+        self.addStockBTN.place(relx=0.6235, rely=0.345, anchor="w")
+        #place the Treeview widget into the tkinter window
+        self.tree.place(relx=0.23, rely=0.55, anchor="w")
 
         self.controller = controller
 
     def add_row(self, id, stockname, description, creation_date, modified_date):
         item_id = self.tree.insert("", "end", values=(id, stockname, description, creation_date, modified_date, "Edit", "Delete"))
-        self.tree.column("ID", width=60)
-        self.tree.column("Stock Name", width=200)
+        self.tree.column("ID", width=80)
+        self.tree.column("Stock Name", width=220)
         self.tree.column("Description", width=400)
         self.tree.column("Creation Date", width=250)
         self.tree.column("Date Modified", width=250)
@@ -170,12 +182,29 @@ class HomePage(ttk.Frame):
         item_id = self.tree.identify_row(event.y)
         if item_id:
             column = self.tree.identify_column(event.x)
-            if column == "#3":
-                id_value = self.tree.item(item_id, "values")[0]
+            id_value = self.tree.item(item_id, "values")[0]
+
+            if column == "#1" or column == "#2":
+                print("open: "+id_value)
+            elif column == "#6":
                 print("edit: "+id_value)
-            if column == "#4":
-                id_value = self.tree.item(item_id, "values")[0]
+            elif column == "#7":
                 print("delete: "+id_value)
 
-    def add_stock():
-        pass
+    def clear_form(self):
+        self.stocknameEntry.delete(0, 'end')
+        self.descriptionEntry.delete(0, 'end')
+
+    def add_stock(self):
+        stockname = self.stocknameEntry.get()
+        description = self.descriptionEntry.get()
+        
+        stock = Stock(stockname, description)
+        stock.add_stock()
+        stock_id = stock.get_stock_id()
+
+        ownership = Ownership(self.username, stock_id, 'edit')
+        ownership.add_stock_user()
+
+        self.clear_form()
+        self.controller.update_page(HomePage)
