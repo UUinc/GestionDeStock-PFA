@@ -101,15 +101,18 @@ class StockSettingsPage(ttk.Frame):
         username = controller.get_username()
         user = User.get_information(username)
         firstname = user.get_firstname()
-        self.user = ttk.Label(self, text="Hi, "+firstname, foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/38)))
-        self.user.place(relx=0.85, rely=0.090, anchor="w")
+        self.usergreetingTitle = ttk.Label(self, text="Hi, "+firstname, foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/38)))
+        self.usergreetingTitle.place(relx=0.92, rely=0.08, anchor="e")
+
         #user icon
         user_img = Image.open("assets/logo/profile.png")
         user_img = user_img.resize((75, 75), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(user_img)
-        self.userIcon = Label(self, image=photo, bd=0)
-        self.userIcon.image = photo
-        self.userIcon.place(relx=0.93, rely=0.090, anchor="w")
+        self.profileIcon = Label(self, image=photo, bd=0)
+        self.profileIcon.image = photo
+        self.profileIcon.place(relx=0.95, rely=0.08, anchor="center")
+
+        #WORK HERE 
         #BODY
         #stockname section
         self.stocknameLabel = ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
