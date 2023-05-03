@@ -65,6 +65,15 @@ class Stock:
         conn.close()
         return result
 
+    @staticmethod
+    def get_stocks_filter(username, filter):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute("SELECT s.* FROM stockownership AS o JOIN stock AS s ON o.stock_id = s.stock_id WHERE o.username = %s and s.name LIKE %s", (username, "%" + filter + "%"))
+        result = cur.fetchall()
+        conn.close()
+        return result
+
     def update_stock_name(self):
         conn = mysqlconnect()
         cur = conn.cursor()

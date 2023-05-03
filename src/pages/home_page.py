@@ -119,6 +119,10 @@ class HomePage(ttk.Frame):
         photo = ImageTk.PhotoImage(search_img)
         self.searchIcon = Label(self, image=photo, bd=0)
         self.searchIcon.image = photo
+        #filter button
+        s = ttk.Style()
+        s.configure('filter_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), padding=(30, 9), background='#4D5D69', foreground='#FFFFFF', borderwidth=0)
+        self.filterBTN = ttk.Button(self, text="Filter", style='filter_btn.TButton', bootstyle=PRIMARY, command=self.filter)
         #entry
         self.searchbarEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=46)
         #stocks list title
@@ -152,7 +156,6 @@ class HomePage(ttk.Frame):
 
         #display all user's stocks
         stocks = Stock.get_stocks(self.username)
-
         for stock in stocks:
             self.add_row(stock[0], stock[1], stock[2], stock[3], stock[4])
 
@@ -165,6 +168,7 @@ class HomePage(ttk.Frame):
         self.searchIcon.place(relx=0.56, rely=0.19, anchor="center")
         self.searchIcon.lift()
         self.searchbarEntry.place(relx=0.405, rely=0.19, anchor="center")
+        self.filterBTN.place(relx=0.584, rely=0.19, anchor="w")
         self.stocklistTitle.place(relx=0.25, rely=0.26, anchor="center")
         #add stock
         self.stocknameLabel.place(relx=0.23, rely=0.305, anchor="w")
@@ -197,9 +201,10 @@ class HomePage(ttk.Frame):
                 print("open: "+id_value)
             elif column == "#6":
                 print("edit: "+id_value)
+                from src.pages.stock_settings_page import StockSettingsPage
+                self.controller.update_page(StockSettingsPage)
             elif column == "#7":
                 ownership = Ownership.get_ownership(self.username, id_value)
-                print(ownership.get_role())
                 if ownership.get_role() == 'edit':
                     Stock.delete_stock(id_value)
                     self.controller.update_page(HomePage)
@@ -207,12 +212,24 @@ class HomePage(ttk.Frame):
                     messagebox.showerror("Error", "Unable to delete stock. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
 
     def clear_form(self):
+        self.searchbarEntry.delete(0, 'end')
         self.stocknameEntry.delete(0, 'end')
         self.descriptionEntry.delete(0, 'end')
+    
+    def filter(self):
+        self.tree.delete(*self.tree.get_children())
+        stocks = Stock.get_stocks_filter(self.username, self.searchbarEntry.get())
+        for stock in stocks:
+            self.add_row(stock[0], stock[1], stock[2], stock[3], stock[4])
+        self.clear_form()
 
     def add_stock(self):
         stockname = self.stocknameEntry.get()
         description = self.descriptionEntry.get()
+
+        if stockname == '':
+            messagebox.showerror("Error", "stock name can not be empty")
+            return
         
         stock = Stock(stockname, description)
         stock.add_stock()
