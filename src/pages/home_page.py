@@ -145,7 +145,7 @@ class HomePage(ttk.Frame):
         # configure the Treeview heading style
         style.configure("stock.Treeview.Heading", font=("Livvic Medium", 14), stretch=False)
          # Create treeview
-        self.tree = ttk.Treeview(self, columns=("ID", "Stock Name", "Description", "Creation Date", "Date Modified", "Action", ""), show='headings', style='stock.Treeview')
+        self.tree = ttk.Treeview(self, columns=("ID", "Stock Name", "Description", "Creation Date", "Date Modified", "Action", ""), show='headings', style='stock.Treeview', height=18)
         self.tree.heading("ID", text="ID", anchor="w")
         self.tree.heading("Stock Name", text="Stock Name", anchor="w")
         self.tree.heading("Description", text="Description", anchor="w")
@@ -169,7 +169,7 @@ class HomePage(ttk.Frame):
         self.searchIcon.lift()
         self.searchbarEntry.place(relx=0.405, rely=0.19, anchor="center")
         self.filterBTN.place(relx=0.584, rely=0.19, anchor="w")
-        self.stocklistTitle.place(relx=0.25, rely=0.26, anchor="center")
+        self.stocklistTitle.place(relx=0.229, rely=0.26, anchor="w")
         #add stock
         self.stocknameLabel.place(relx=0.23, rely=0.305, anchor="w")
         self.stocknameEntry.place(relx=0.23, rely=0.345, anchor="w")
@@ -177,7 +177,7 @@ class HomePage(ttk.Frame):
         self.descriptionEntry.place(relx=0.39, rely=0.345, anchor="w")
         self.addStockBTN.place(relx=0.6235, rely=0.345, anchor="w")
         #place the Treeview widget into the tkinter window
-        self.tree.place(relx=0.23, rely=0.55, anchor="w")
+        self.tree.place(relx=0.23, rely=0.4, anchor="nw")
 
         self.controller = controller
 
@@ -199,10 +199,17 @@ class HomePage(ttk.Frame):
 
             if column == "#1" or column == "#2":
                 print("open: "+id_value)
+                self.controller.set_stock_id(id_value)
+                from src.pages.stock_page import StockPage
+                self.controller.update_page(StockPage)
             elif column == "#6":
                 print("edit: "+id_value)
-                from src.pages.stock_settings_page import StockSettingsPage
-                self.controller.update_page(StockSettingsPage)
+                if ownership.get_role() == 'edit':
+                    self.controller.set_stock_id(id_value)
+                    from src.pages.stock_settings_page import StockSettingsPage
+                    self.controller.update_page(StockSettingsPage)
+                else:
+                    messagebox.showerror("Error", "Unable to edit stock. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
             elif column == "#7":
                 ownership = Ownership.get_ownership(self.username, id_value)
                 if ownership.get_role() == 'edit':

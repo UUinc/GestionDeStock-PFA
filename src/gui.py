@@ -18,6 +18,8 @@ class GUI:
         self.root.resizable(False, False)
 
         self.__username = ""
+        self.__stock_id = -1
+        self.__product_id = -1
 
         self.container = ttk.Frame(self.root)
         self.container.pack(fill="both", expand=True)
@@ -47,6 +49,18 @@ class GUI:
 
     def get_username(self):
         return self.__username
+
+    def set_stock_id(self, stock_id):
+        self.__stock_id = stock_id
+
+    def get_stock_id(self):
+        return self.__stock_id
+
+    def set_product_id(self, product_id):
+        self.__product_id = product_id
+
+    def get_product_id(self):
+        return self.__product_id
 
     def on_closing(self):
         if messagebox.askyesno(title="Quit?", message="Do you really want to quit?"):
