@@ -4,7 +4,7 @@ from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from src.connect import *
-from src.user import *
+from src.user import User
 
 class StockSettingsPage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -97,15 +97,18 @@ class StockSettingsPage(ttk.Frame):
         #set widgets position
         self.pageSubtitle.place(relx=0.22, rely=0.15, anchor="w")
         #Hi,user 
-        self.user = ttk.Label(self, text="Hi, User", foreground="#4D5D69", font=("Livvic Light", int(SCR_HEIGHT/50)))
+        username = controller.get_username()
+        user = User.get_information(username)
+        firstname = user.get_firstname()
+        self.user = ttk.Label(self, text="Hi, "+firstname, foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/38)))
         self.user.place(relx=0.85, rely=0.090, anchor="w")
         #user icon
-        user_img = Image.open("assets/logo/user.png")
-        user_img = user_img.resize((50, 50), Image.ANTIALIAS)
+        user_img = Image.open("assets/logo/profile.png")
+        user_img = user_img.resize((75, 75), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(user_img)
         self.userIcon = Label(self, image=photo, bd=0)
         self.userIcon.image = photo
-        self.userIcon.place(relx=0.91, rely=0.090, anchor="w")
+        self.userIcon.place(relx=0.93, rely=0.090, anchor="w")
         #BODY
         #stockname section
         self.stocknameLabel = ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
