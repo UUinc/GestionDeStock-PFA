@@ -28,9 +28,18 @@ class Stock:
         self.__name = name
         self.__last_edit=current_timestamp()
 
+    def get_name(self):
+        return self.__name
+
     def set_description(self,description):
         self.__description = description
         self.__last_edit=current_timestamp()
+
+    def set_creation_date(self, creation_date):
+        self.__creation_date=creation_date
+
+    def set_last_edit(self, last_edit):
+        self.__last_edit=last_edit
 
     #adding
     def add_stock(self):
@@ -51,8 +60,13 @@ class Stock:
         cur = conn.cursor()
         cur.execute('SELECT * FROM stock WHERE stock_id = %s', stock_id)
         result = cur.fetchone()
-        stock = Stock(result[1], result[2], result[3])
-        stock.set_stock_id(result[0])
+        if not result:
+            stock = Stock("none", "none")
+        else:
+            stock = Stock(result[1], result[2])
+            stock.set_stock_id(result[0])
+            stock.set_creation_date(result[3])
+            stock.set_last_edit(result[4])
         conn.close()
         return stock
     

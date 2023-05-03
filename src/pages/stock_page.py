@@ -6,7 +6,7 @@ from ttkbootstrap.constants import *
 
 from src.user import User
 from src.stock import Stock
-from src.ownership import Ownership
+from src.product import Product
 
 from datetime import date
 
@@ -104,7 +104,11 @@ class StockPage(ttk.Frame):
         self.profileIcon.image = photo
 
         #stock name
-        self.stocknameTitle = ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/40)))
+        self.stock_id = controller.get_stock_id()
+        print(self.stock_id)
+        stock = Stock.get_stock(self.stock_id)
+        stock_name = stock.get_name()
+        self.stocknameTitle = ttk.Label(self, text=stock_name, foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/40)))
         #date
         today = date.today()
         formatted_date = today.strftime("%d %b %Y")
@@ -150,9 +154,9 @@ class StockPage(ttk.Frame):
         self.tree.heading("", text="")
 
         #display all user's stocks
-        stocks = Stock.get_stocks(self.username)
-        for stock in stocks:
-            self.add_row(stock[0], stock[1], stock[2], stock[3], stock[4])
+        products = Product.get_products(self.stock_id)
+        for product in products:
+            self.add_row(product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7])
 
         self.tree.bind("<Button-1>", self.on_click)
 
@@ -174,8 +178,15 @@ class StockPage(ttk.Frame):
 
         self.controller = controller
 
-    def add_row(self, id, stockname, description, creation_date, modified_date):
-        item_id = self.tree.insert("", "end", values=(id, stockname, description, "-", "-", "Out of stock", creation_date, modified_date, "Edit", "Delete"))
+    def get_status(self, quantity, threshold):
+        if quantity == 0:
+            return "Out Of Stock"
+        if quantity <= threshold:
+            return "Low Stock"
+        return "In Stock"
+
+    def add_row(self, id, name, description, unit_price, quantity, threshold, entry_date, release_date):
+        item_id = self.tree.insert("", "end", values=(id, name, description, unit_price, quantity, self.get_status(quantity, threshold), entry_date, release_date, "Edit", "Delete"))
         self.tree.column("ID", width=50)
         self.tree.column("Name", width=180)
         self.tree.column("Description", width=290)
