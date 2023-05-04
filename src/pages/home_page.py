@@ -144,7 +144,7 @@ class HomePage(ttk.Frame):
         style.configure('stock.Treeview', rowheight=30, padding=5, font=("Livvic Regular", 12))
         # configure the Treeview heading style
         style.configure("stock.Treeview.Heading", font=("Livvic Medium", 14), stretch=False)
-         # Create treeview
+        # Create treeview
         self.tree = ttk.Treeview(self, columns=("ID", "Stock Name", "Description", "Creation Date", "Date Modified", "Action", ""), show='headings', style='stock.Treeview', height=18)
         self.tree.heading("ID", text="ID", anchor="w")
         self.tree.heading("Stock Name", text="Stock Name", anchor="w")
@@ -197,7 +197,7 @@ class HomePage(ttk.Frame):
         if item_id:
             column = self.tree.identify_column(event.x)
             id_value = self.tree.item(item_id, "values")[0]
-
+            ownership = Ownership.get_ownership(self.username, id_value)
             if column == "#1" or column == "#2":
                 print("open: "+id_value)
                 self.controller.set_stock_id(id_value)
@@ -212,7 +212,6 @@ class HomePage(ttk.Frame):
                 else:
                     messagebox.showerror("Error", "Unable to edit stock. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
             elif column == "#7":
-                ownership = Ownership.get_ownership(self.username, id_value)
                 if ownership.get_role() == 'edit':
                     Stock.delete_stock(id_value)
                     self.controller.update_page(HomePage)
