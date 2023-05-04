@@ -31,6 +31,9 @@ class Product:
     def set_name(self, name):
         self.__name = name
 
+    def get_name(self):
+        return self.__name
+
     def set_description(self, description):
         self.__description = description
 
@@ -72,6 +75,15 @@ class Product:
         conn.close()
         return result
 
+    @staticmethod
+    def get_products_filter(stock_id, filter):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM product WHERE stock_id = %s and name LIKE %s", (stock_id, "%" + filter + "%"))
+        result = cur.fetchall()
+        conn.close()
+        return result
+
     def add_product(self, stock_id):
         conn = mysqlconnect()
         cur = conn.cursor()
@@ -83,10 +95,11 @@ class Product:
         print('new product added')
         conn.close()
 
-    def delete_product(self):
+    @staticmethod
+    def delete_product(product_id):
         conn = mysqlconnect()
         cur = conn.cursor()
-        cur.execute('DELETE FROM product WHERE product_id = %s', self.__product_id)
+        cur.execute('DELETE FROM product WHERE product_id = %s', product_id)
         conn.commit()
         print('product deleted')
         conn.close()

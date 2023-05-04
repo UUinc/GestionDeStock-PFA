@@ -6,6 +6,7 @@ from ttkbootstrap.constants import *
 
 from src.user import User
 from src.stock import Stock
+from src.ownership import Ownership
 from src.product import Product
 
 from datetime import date
@@ -205,25 +206,20 @@ class StockPage(ttk.Frame):
         if item_id:
             column = self.tree.identify_column(event.x)
             id_value = self.tree.item(item_id, "values")[0]
-
-            if column == "#1" or column == "#2":
-                print("open: "+id_value)
-                self.controller.set_product_id(id_value)
-                from src.pages.stock_page import StockPage
-                self.controller.update_page(StockPage)
-            elif column == "#9":
+            ownership = Ownership.get_ownership(self.username, self.stock_id)
+     
+            if column == "#9":
                 print("edit: "+id_value)
                 if ownership.get_role() == 'edit':
                     self.controller.set_product_id(id_value)
-                    from src.pages.stock_settings_page import StockSettingsPage
-                    self.controller.update_page(StockSettingsPage)
+                    from src.pages.product_page import ProductPage
+                    self.controller.update_page(ProductPage)
                 else:
                     messagebox.showerror("Error", "Unable to edit product. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
             elif column == "#10":
-                ownership = Ownership.get_ownership(self.username, id_value)
                 if ownership.get_role() == 'edit':
-                    Stock.delete_stock(id_value)
-                    self.controller.update_page(HomePage)
+                    Product.delete_product(id_value)
+                    self.controller.update_page(StockPage)
                 else:
                     messagebox.showerror("Error", "Unable to delete product. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
 
@@ -232,10 +228,17 @@ class StockPage(ttk.Frame):
     
     def filter(self):
         self.tree.delete(*self.tree.get_children())
-        stocks = Stock.get_stocks_filter(self.username, self.searchbarEntry.get())
-        for stock in stocks:
-            self.add_row(stock[0], stock[1], stock[2], stock[3], stock[4])
+        products = Product.get_products_filter(self.stock_id, self.searchbarEntry.get())
+        for product in products:
+            self.add_row(product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7])
         self.clear_form()
 
     def add_product(self):
+        ownership = Ownership.get_ownership(self.username, self.stock_id)
+        if ownership.get_role() == 'edit':
+            self.controller.set_product_id(-1)
+            from src.pages.product_page import ProductPage
+            self.controller.update_page(ProductPage)
+        else:
+            messagebox.showerror("Error", "Unable to edit product. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
         pass
