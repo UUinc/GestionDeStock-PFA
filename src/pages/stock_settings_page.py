@@ -129,7 +129,7 @@ class StockSettingsPage(ttk.Frame):
         self.roleLabel.place(relx=0.49, rely=0.35, anchor="w")
         self.role= ttk.Combobox(self,width=28,values=["edit","view"],height=50,font=("Livvic Regular", int(SCR_HEIGHT/60)))
         self.role.place(relx=0.49, rely=0.4, anchor="w",height=50)
-        self.role.set("choose a role",font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.role.set("choose a role")
         #Button add user
         self.add_user_btn= ttk.Button(self, text="add user", style='sidebar_btn.TButton', padding=(10,10),width=20)
         self.add_user_btn.place(relx=0.75, rely= 0.4, anchor="w")
