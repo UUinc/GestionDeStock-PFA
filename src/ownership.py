@@ -81,5 +81,23 @@ class Ownership:
         print('stock user updated')
         conn.close()
 
+    @staticmethod
+    def get_users(username):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute('SELECT s.* FROM stockownership AS o JOIN stock AS s ON o.stock_id = s.stock_id WHERE o.username = %s', username)
+        result = cur.fetchall()
+        conn.close()
+        return result
+    
+    @staticmethod
+    def get_users(stock_id):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute('SELECT o.username, u.email, o.role FROM stockownership AS o JOIN user AS u ON u.username = o.username WHERE stock_id = %s',stock_id)
+        result = cur.fetchall()
+        conn.close()
+        return result
+
 test = Ownership("yousra.eb", 3, "edit")
 test.add_stock_user()

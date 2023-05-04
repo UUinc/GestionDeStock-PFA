@@ -45,14 +45,7 @@ class User:
         conn.close()
         return user
      
-    @staticmethod
-    def get_users(username):
-        conn = mysqlconnect()
-        cur = conn.cursor()
-        cur.execute('SELECT s.* FROM stockownership AS o JOIN stock AS s ON o.stock_id = s.stock_id WHERE o.username = %s', username)
-        result = cur.fetchall()
-        conn.close()
-        return result
+    
     
     def get_firstname(self):
         return self.__first_name
