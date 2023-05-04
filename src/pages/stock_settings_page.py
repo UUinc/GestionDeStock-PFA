@@ -5,6 +5,7 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from src.user import User
 from src.ownership import Ownership
+from src.stock import Stock
 
 class StockSettingsPage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -125,8 +126,13 @@ class StockSettingsPage(ttk.Frame):
         self.stocknameLabel.place(relx=0.25, rely=0.25, anchor="w")
         self.stockname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=62)
         self.stockname_entry.place(relx=0.25, rely=0.3, anchor="w")
+        # save button function
+        def savebtn():
+            stock=Stock
+            name= self.stockname_entry.get()
+            stock.set_name(self, name)
         #Button save
-        self.save_btn= ttk.Button(self, text="save", style='sidebar_btn.TButton', padding=(10,10),width=20)
+        self.save_btn= ttk.Button(self, text="save", style='sidebar_btn.TButton', padding=(10,10),width=20,command=savebtn())
         self.save_btn.place(relx=0.75, rely= 0.3, anchor="w")
         #username section
         self.usernameLabel = ttk.Label(self, text="Username", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
@@ -139,8 +145,12 @@ class StockSettingsPage(ttk.Frame):
         self.role= ttk.Combobox(self,width=28,values=["edit","view"],height=50,font=("Livvic Regular", int(SCR_HEIGHT/60)))
         self.role.place(relx=0.49, rely=0.4, anchor="w",height=50)
         self.role.set("choose a role")
+        # add user button function
+        def add():
+            user=Ownership
+            user.add_stock_user
         #Button add user
-        self.add_user_btn= ttk.Button(self, text="add user", style='sidebar_btn.TButton', padding=(10,10),width=20)
+        self.add_user_btn= ttk.Button(self, text="add user", style='sidebar_btn.TButton', padding=(10,10),width=20,command=add())
         self.add_user_btn.place(relx=0.75, rely= 0.4, anchor="w")
         #users list section
         self.list= ttk.Label(self, text="users list", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/60)))
@@ -170,6 +180,7 @@ class StockSettingsPage(ttk.Frame):
         self.controller = controller
 
     
+
        
 
 
