@@ -114,7 +114,7 @@ class SettingsPage(ttk.Frame):
         
         self.emailLabel = ttk.Label(self, text="Email", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
         self.emailLabel.place(relx=0.30, rely=0.55, anchor="w")
-        self.email_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=67)
+        self.email_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=67,bootstyle=SECONDARY,background='#FFFFFF')
         self.email_entry.place(relx=0.30, rely=0.60, anchor="w")
         
         #####
