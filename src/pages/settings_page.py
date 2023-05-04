@@ -111,19 +111,19 @@ class SettingsPage(ttk.Frame):
         self.usernameTitle.place(relx=0.57, rely=0.39, anchor="center")
         
         self.firstnameLabel = ttk.Label(self, text="First name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.firstnameLabel.place(relx=0.30, rely=0.45, anchor="w")
-        self.firstname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/110)), width=61)
-        self.firstname_entry.place(relx=0.30, rely=0.50, anchor="w")
+        self.firstnameLabel.place(relx=0.28, rely=0.45, anchor="w")
+        self.firstname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31)
+        self.firstname_entry.place(relx=0.28, rely=0.50, anchor="w")
         
         self.lastnameLabel = ttk.Label(self, text="Last name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.lastnameLabel.place(relx=0.62, rely=0.45, anchor="w")
-        self.lastname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/110)), width=61)
-        self.lastname_entry.place(relx=0.62, rely=0.50, anchor="w")
+        self.lastnameLabel.place(relx=0.60, rely=0.45, anchor="w")
+        self.lastname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31)
+        self.lastname_entry.place(relx=0.60, rely=0.50, anchor="w")
         
         self.emailLabel = ttk.Label(self, text="Email", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.emailLabel.place(relx=0.30, rely=0.55, anchor="w")
-        self.email_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=67)
-        self.email_entry.place(relx=0.30, rely=0.60, anchor="w")
+        self.emailLabel.place(relx=0.28, rely=0.55, anchor="w")
+        self.email_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=68,bootstyle=SECONDARY,background='#FFFFFF')
+        self.email_entry.place(relx=0.28, rely=0.60, anchor="w")
         
         #####
         user_img = Image.open("assets/logo/email.png")
@@ -131,36 +131,36 @@ class SettingsPage(ttk.Frame):
         photo = ImageTk.PhotoImage(user_img)
         self.userIcon = Label(self, image=photo, bd=0)
         self.userIcon.image = photo
-        self.userIcon.place(relx=0.88, rely=0.60, anchor="center")
+        self.userIcon.place(relx=0.86, rely=0.60, anchor="center")
         #####
         
         self.passwordLabel = ttk.Label(self, text="Password", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.passwordLabel.place(relx=0.30, rely=0.65, anchor="w")
-        self.password_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/110)), width=61, show="•" )
-        self.password_entry.place(relx=0.30, rely=0.70, anchor="w")
+        self.passwordLabel.place(relx=0.28, rely=0.65, anchor="w")
+        self.password_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31, show="•" )
+        self.password_entry.place(relx=0.28, rely=0.70, anchor="w")
         #####
         user_img = Image.open("assets/logo/padlock.png")
         user_img = user_img.resize((20, 20), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(user_img)
         self.userIcon = Label(self, image=photo, bd=0)
         self.userIcon.image = photo
-        self.userIcon.place(relx=0.56, rely=0.70, anchor="center")
+        self.userIcon.place(relx=0.54, rely=0.70, anchor="center")
         #####
         
         self.newpasswordLabel = ttk.Label(self, text="New password", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.newpasswordLabel.place(relx=0.62, rely=0.65, anchor="w")
-        self.newpassword_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/110)), width=61, show="•")
-        self.newpassword_entry.place(relx=0.62, rely=0.70, anchor="w")
+        self.newpasswordLabel.place(relx=0.60, rely=0.65, anchor="w")
+        self.newpassword_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31, show="•")
+        self.newpassword_entry.place(relx=0.60, rely=0.70, anchor="w")
         #####
         user_img = Image.open("assets/logo/padlock.png")
         user_img = user_img.resize((20, 20), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(user_img)
         self.userIcon = Label(self, image=photo, bd=0)
         self.userIcon.image = photo
-        self.userIcon.place(relx=0.88, rely=0.70, anchor="center")
+        self.userIcon.place(relx=0.86, rely=0.70, anchor="center")
         #####
         
-        self.save_btn= ttk.Button(self, text="save", style='sidebar_btn.TButton', padding=(15,15),width=30)
-        self.save_btn.place(relx=0.48, rely= 0.84, anchor="w")
+        self.save_btn= ttk.Button(self, text="save", style='sidebar_btn.TButton', padding=(10,10),width=20)
+        self.save_btn.place(relx=0.50, rely= 0.84, anchor="w")
         
         self.controller = controller
