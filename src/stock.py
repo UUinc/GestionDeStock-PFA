@@ -35,6 +35,9 @@ class Stock:
         self.__description = description
         self.__last_edit=current_timestamp()
 
+    def get_description(self):
+        return self.__description
+
     def set_creation_date(self, creation_date):
         self.__creation_date=creation_date
 
@@ -84,6 +87,15 @@ class Stock:
         conn = mysqlconnect()
         cur = conn.cursor()
         cur.execute("SELECT s.* FROM stockownership AS o JOIN stock AS s ON o.stock_id = s.stock_id WHERE o.username = %s and s.name LIKE %s", (username, "%" + filter + "%"))
+        result = cur.fetchall()
+        conn.close()
+        return result
+
+    @staticmethod
+    def get_stock_users(stock_id):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute('SELECT o.username, u.email, o.role FROM `stockownership` AS o JOIN user AS u ON u.username = o.username WHERE stock_id = %s', stock_id)
         result = cur.fetchall()
         conn.close()
         return result

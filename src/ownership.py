@@ -62,10 +62,11 @@ class Ownership:
             return False
         conn.close()
 
-    def remove_stock_user(self):
+    @staticmethod
+    def remove_stock_user(username, stock_id):
         conn = mysqlconnect()
         cur = conn.cursor()
-        cur.execute('DELETE FROM stockownership WHERE stock_id = %s and username= %s',self.__stock_id, self.__username)
+        cur.execute('DELETE FROM stockownership WHERE username= %s and stock_id = %s', (username, stock_id))
         conn.commit()
         print('stock user removed')
         conn.close()

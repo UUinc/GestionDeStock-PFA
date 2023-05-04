@@ -3,7 +3,9 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+
 from src.user import User
+from src.stock import Stock
 from src.ownership import Ownership
 from src.stock import Stock
 
@@ -96,7 +98,6 @@ class StockSettingsPage(ttk.Frame):
         self.logout_sidebar_btn.place(relx=0, rely=0.4, anchor="w")
         self.logoutIcon.place(relx=0.038, rely=0.4, anchor="w")
 
-
         #Stock Settings page
         #Stock Settings page title
         self.pageTitle = ttk.Label(self, text="Stock Settings", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/30)))
@@ -104,9 +105,14 @@ class StockSettingsPage(ttk.Frame):
         self.pageTitle.place(relx=0.23, rely=0.08, anchor="w")
         
         #Stock Settings page Subtitle
-        self.pageSubtitle= ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/50)))
+        #stock name
+        self.stock_id = controller.get_stock_id()
+        print(self.stock_id)
+        stock = Stock.get_stock(self.stock_id)
+        stock_name = stock.get_name()
+        self.pageSubtitle = ttk.Label(self, text=stock_name, foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/40)))
         #set widgets position
-        self.pageSubtitle.place(relx=0.23, rely=0.15, anchor="w")
+        self.pageSubtitle.place(relx=0.23, rely=0.14, anchor="w")
         #Hi,user 
         username = controller.get_username()
         user = User.get_information(username)
@@ -121,48 +127,51 @@ class StockSettingsPage(ttk.Frame):
         self.userIcon.image = photo
         self.userIcon.place(relx=0.95, rely=0.08, anchor="center")
         #BODY
+        #get stock data
+        stock_description = stock.get_description()
         #stockname section
-        self.stocknameLabel = ttk.Label(self, text="Stock name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.stocknameLabel.place(relx=0.25, rely=0.25, anchor="w")
+        self.stocknameLabel = ttk.Label(self, text="name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.stocknameLabel.place(relx=0.25, rely=0.2, anchor="w")
         self.stockname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=62)
-        self.stockname_entry.place(relx=0.25, rely=0.3, anchor="w")
-        # save button function
-        def savebtn():
-            stock=Stock
-            name= self.stockname_entry.get()
-            stock.set_name(self, name)
+        self.stockname_entry.insert(0, stock_name)
+        self.stockname_entry.place(relx=0.25, rely=0.25, anchor="w")
+        #description section
+        self.descriptionLabel = ttk.Label(self, text="description", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.descriptionLabel.place(relx=0.25, rely=0.3, anchor="w")
+        self.description_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=62)
+        self.description_entry.insert(0, stock_description)
+        self.description_entry.place(relx=0.25, rely=0.35, anchor="w")
         #Button save
-        self.save_btn= ttk.Button(self, text="save", style='sidebar_btn.TButton', padding=(10,10),width=20,command=savebtn())
-        self.save_btn.place(relx=0.75, rely= 0.3, anchor="w")
+        self.save_btn= ttk.Button(self, text="save", style='sidebar_btn.TButton', padding=(10,10),width=20)
+        self.save_btn.place(relx=0.75, rely= 0.35, anchor="w")
         #username section
-        self.usernameLabel = ttk.Label(self, text="Username", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.usernameLabel.place(relx=0.25, rely=0.35, anchor="w")
+        self.usernameLabel = ttk.Label(self, text="username", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.usernameLabel.place(relx=0.25, rely=0.4, anchor="w")
         self.username_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=30)
-        self.username_entry.place(relx=0.25, rely=0.4, anchor="w")
+        self.username_entry.place(relx=0.25, rely=0.45, anchor="w")
         #role
-        self.roleLabel = ttk.Label(self, text="Role", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.roleLabel.place(relx=0.49, rely=0.35, anchor="w")
+        self.roleLabel = ttk.Label(self, text="role", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.roleLabel.place(relx=0.49, rely=0.4, anchor="w")
         self.role= ttk.Combobox(self,width=28,values=["edit","view"],height=50,font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.role.place(relx=0.49, rely=0.4, anchor="w",height=50)
+        self.role.place(relx=0.49, rely=0.45, anchor="w",height=50)
         self.role.set("choose a role")
         # add user button function
         def add():
             user=Ownership
             user.add_stock_user
         #Button add user
-        self.add_user_btn= ttk.Button(self, text="add user", style='sidebar_btn.TButton', padding=(10,10),width=20,command=add())
-        self.add_user_btn.place(relx=0.75, rely= 0.4, anchor="w")
+        self.add_user_btn= ttk.Button(self, text="add user", style='sidebar_btn.TButton', padding=(10,10),width=20)
+        self.add_user_btn.place(relx=0.75, rely= 0.45, anchor="w")
         #users list section
         self.list= ttk.Label(self, text="users list", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/60)))
-        self.list.place(relx=0.25, rely=0.50, anchor="w")
+        self.list.place(relx=0.25, rely=0.53, anchor="w")
 
-
-         # create a Treeview widget including all user's stocks
+        # create a Treeview widget including all user's stocks
         style = ttk.Style()
         style.configure('userslist.Treeview', rowheight=30, padding=5, font=("Livvic Regular", 12))
         # configure the Treeview heading style
         style.configure("userslist.Treeview.Heading", font=("Livvic Medium", 14), stretch=False)
-         # Create treeview
+        # Create treeview
         self.tree = ttk.Treeview(self, columns=("Username", "Email", "Role", "Action", ""), show='headings', style='userslist.Treeview')
         self.tree.heading("Username", text="Username", anchor="w")
         self.tree.heading("Email", text="Email", anchor="w")
@@ -176,20 +185,40 @@ class StockSettingsPage(ttk.Frame):
         self.tree.column("Action", width=98)
         self.tree.column("", width=95)
 
-        self.tree.place(relx=0.25, rely=0.70, anchor="w")
+        #display all user's stocks
+        users = Stock.get_stock_users(self.stock_id)
+        for user in users:
+            self.add_row(user[0], user[1], user[2])
+
+        self.tree.bind("<Button-1>", self.on_click)
+
+        self.tree.place(relx=0.25, rely=0.67, anchor="w")
         self.controller = controller
 
-    
+    def add_row(self, username, email, role):
+        item_id = self.tree.insert("", "end", values=(username, email, role, "Edit", "Delete"))
 
-       
+    def on_click(self, event):
+        item_id = self.tree.identify_row(event.y)
+        if item_id:
+            column = self.tree.identify_column(event.x)
+            username = self.tree.item(item_id, "values")[0]
+            ownership = Ownership.get_ownership(username, self.stock_id)
+           
+            if column == "#4":
+                print("edit: "+username)
+                if ownership.get_role() == 'edit':
+                    pass
+                else:
+                    messagebox.showerror("Error", "Unable to edit ownership. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
+            elif column == "#5":
+                if ownership.get_role() == 'edit':
+                    Ownership.remove_stock_user(username, self.stock_id)
+                    self.controller.update_page(StockSettingsPage)
+                else:
+                    messagebox.showerror("Error", "Unable to delete ownership. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
 
-
-
-
-
-
-        
-    
-        
-    
-        
+    def clear_form(self):
+        self.stockname_entry.delete(0, 'end')
+        self.description_entry.delete(0, 'end')
+        self.username_entry.delete(0, 'end')
