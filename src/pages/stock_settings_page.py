@@ -3,8 +3,8 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
-from src.connect import *
 from src.user import User
+from src.ownership import Ownership
 
 class StockSettingsPage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -49,7 +49,8 @@ class StockSettingsPage(ttk.Frame):
         self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(SettingsPage))
         from src.pages.settings_page import SettingsPage
         self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.update_page(SettingsPage))
-        
+        from src.pages.login_page import LoginPage
+        self.logout_sidebar_btn = ttk.Button(self, text="Logout", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.show_page(LoginPage))
         #Sidebar logos
         #Dashboard icon
         home_img = Image.open("assets/logo/home.png")
@@ -75,6 +76,12 @@ class StockSettingsPage(ttk.Frame):
         photo = ImageTk.PhotoImage(settings_img)
         self.settingsIcon = Label(self, image=photo, bd=0)
         self.settingsIcon.image = photo
+        #Logout icon
+        logout_img = Image.open("assets/logo/logout.png")
+        logout_img = logout_img.resize((25, 25), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(logout_img)
+        self.logoutIcon = Label(self, image=photo, bd=0)
+        self.logoutIcon.image = photo
 
         #set sidebar buttons position
         self.home_sidebar_btn.place(relx=0, rely=0.2, anchor="w")
@@ -85,6 +92,8 @@ class StockSettingsPage(ttk.Frame):
         self.notificationIcon.place(relx=0.038, rely=0.3, anchor="w")
         self.settings_sidebar_btn.place(relx=0, rely=0.35, anchor="w")
         self.settingsIcon.place(relx=0.038, rely=0.35, anchor="w")
+        self.logout_sidebar_btn.place(relx=0, rely=0.4, anchor="w")
+        self.logoutIcon.place(relx=0.038, rely=0.4, anchor="w")
 
 
         #Stock Settings page
@@ -136,27 +145,56 @@ class StockSettingsPage(ttk.Frame):
         #users list section
         self.list= ttk.Label(self, text="users list", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/60)))
         self.list.place(relx=0.25, rely=0.50, anchor="w")
-        #list items
+
+
+         # create a Treeview widget including all user's stocks
         style = ttk.Style()
         style.configure('userslist.Treeview', rowheight=30, padding=5, font=("Livvic Regular", 12))
         # configure the Treeview heading style
         style.configure("userslist.Treeview.Heading", font=("Livvic Medium", 14), stretch=False)
-        #items
-        self.tree = ttk.Treeview(self, columns=("Username", "Email", "Role", "Action"), show='headings', style='userslist.Treeview')
+         # Create treeview
+        self.tree = ttk.Treeview(self, columns=("Username", "Email", "Role", "Action", ""), show='headings', style='userslist.Treeview')
         self.tree.heading("Username", text="Username", anchor="w")
         self.tree.heading("Email", text="Email", anchor="w")
         self.tree.heading("Role", text="Role", anchor="w")
         self.tree.heading("Action", text="Action", anchor="w")
-        self.tree.column('Username', width=300)
-        self.tree.column('Email', width=400)
-        self.tree.column('Role', width=400)
-        self.tree.column('Action', width=120)
+        self.tree.heading("", text="")
+
+        self.tree.column("Username", width=250)
+        self.tree.column("Email", width=400)
+        self.tree.column("Role", width=395)
+        self.tree.column("Action", width=98)
+        self.tree.column("", width=95)
+
         self.tree.place(relx=0.25, rely=0.70, anchor="w")
-
-
-
-        
-    
-        
-    
         self.controller = controller
+
+    
+       
+
+
+
+        # #list items
+        # style = ttk.Style()
+        # style.configure('userslist.Treeview', rowheight=30, padding=5, font=("Livvic Regular", 12))
+        # # configure the Treeview heading style
+        # style.configure("userslist.Treeview.Heading", font=("Livvic Medium", 14), stretch=False)
+        # #items
+        # self.tree = ttk.Treeview(self, columns=("Username", "Email", "Role", "Action"), show='headings', style='userslist.Treeview')
+        # self.tree.heading("Username", text="Username", anchor="w")
+        # self.tree.heading("Email", text="Email", anchor="w")
+        # self.tree.heading("Role", text="Role", anchor="w")
+        # self.tree.heading("Action", text="Action", anchor="w")
+        # self.tree.column('Username', width=300)
+        # self.tree.column('Email', width=400)
+        # self.tree.column('Role', width=400)
+        # self.tree.column('Action', width=120)
+        # self.tree.place(relx=0.25, rely=0.70, anchor="w")
+
+
+
+        
+    
+        
+    
+        

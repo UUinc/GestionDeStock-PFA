@@ -46,7 +46,8 @@ class SettingsPage(ttk.Frame):
         from src.pages.home_page import HomePage
         self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(HomePage))
         self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_disabled_btn.TButton', padding=(120, 10, 153, 10))
-        
+        from src.pages.login_page import LoginPage
+        self.logout_sidebar_btn = ttk.Button(self, text="Logout", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.show_page(LoginPage))
         #Sidebar logos
         #Dashboard icon
         home_img = Image.open("assets/logo/home.png")
@@ -72,6 +73,12 @@ class SettingsPage(ttk.Frame):
         photo = ImageTk.PhotoImage(settings_img)
         self.settingsIcon = Label(self, image=photo, bd=0)
         self.settingsIcon.image = photo
+        #Logout icon
+        logout_img = Image.open("assets/logo/logout.png")
+        logout_img = logout_img.resize((25, 25), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(logout_img)
+        self.logoutIcon = Label(self, image=photo, bd=0)
+        self.logoutIcon.image = photo
 
         #set sidebar buttons position
         self.home_sidebar_btn.place(relx=0, rely=0.2, anchor="w")
@@ -82,6 +89,9 @@ class SettingsPage(ttk.Frame):
         self.notificationIcon.place(relx=0.038, rely=0.3, anchor="w")
         self.settings_sidebar_btn.place(relx=0, rely=0.35, anchor="w")
         self.settingsIcon.place(relx=0.038, rely=0.35, anchor="w")
+        self.logout_sidebar_btn.place(relx=0, rely=0.4, anchor="w")
+        self.logoutIcon.place(relx=0.038, rely=0.4, anchor="w")
+
 
 
         #Settings page
