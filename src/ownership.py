@@ -82,22 +82,25 @@ class Ownership:
         conn.close()
 
     @staticmethod
-    def get_users(username):
+    def get_users():
         conn = mysqlconnect()
         cur = conn.cursor()
-        cur.execute('SELECT s.* FROM stockownership AS o JOIN stock AS s ON o.stock_id = s.stock_id WHERE o.username = %s', username)
+        cur.execute('SELECT s.* FROM stockownership AS o JOIN stock AS s ON o.stock_id = s.stock_id')
         result = cur.fetchall()
         conn.close()
         return result
     
     @staticmethod
-    def get_users(stock_id):
+    def get_info(stock_id):
         conn = mysqlconnect()
         cur = conn.cursor()
         cur.execute('SELECT o.username, u.email, o.role FROM stockownership AS o JOIN user AS u ON u.username = o.username WHERE stock_id = %s',stock_id)
-        result = cur.fetchall()
+        result = cur.fetchone()
+        username=result[0]
+        email=result[1]
+        role=result[2]
         conn.close()
-        return result
+        return username,email,role
 
-test = Ownership("yousra.eb", 3, "edit")
-test.add_stock_user()
+# test = Ownership("yousra.eb", 3, "edit")
+# test.add_stock_user()

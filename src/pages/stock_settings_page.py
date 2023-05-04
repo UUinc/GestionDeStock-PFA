@@ -185,22 +185,6 @@ class StockSettingsPage(ttk.Frame):
 
 
 
-        # #list items
-        # style = ttk.Style()
-        # style.configure('userslist.Treeview', rowheight=30, padding=5, font=("Livvic Regular", 12))
-        # # configure the Treeview heading style
-        # style.configure("userslist.Treeview.Heading", font=("Livvic Medium", 14), stretch=False)
-        # #items
-        # self.tree = ttk.Treeview(self, columns=("Username", "Email", "Role", "Action"), show='headings', style='userslist.Treeview')
-        # self.tree.heading("Username", text="Username", anchor="w")
-        # self.tree.heading("Email", text="Email", anchor="w")
-        # self.tree.heading("Role", text="Role", anchor="w")
-        # self.tree.heading("Action", text="Action", anchor="w")
-        # self.tree.column('Username', width=300)
-        # self.tree.column('Email', width=400)
-        # self.tree.column('Role', width=400)
-        # self.tree.column('Action', width=120)
-        # self.tree.place(relx=0.25, rely=0.70, anchor="w")
 
 
 
