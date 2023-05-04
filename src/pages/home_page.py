@@ -5,6 +5,8 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
 from src.user import User
+from src.stock import Stock
+from src.ownership import Ownership
 
 class HomePage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -44,12 +46,13 @@ class HomePage(ttk.Frame):
         #create buttons
         self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_disabled_btn.TButton', padding=(120, 10, 125, 10))
         from src.pages.stock_settings_page import StockSettingsPage
-        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_btn.TButton', padding=(120, 10, 150, 10), command=lambda: controller.show_page(StockSettingsPage))
+        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_btn.TButton', padding=(120, 10, 150, 10), command=lambda: controller.update_page(StockSettingsPage))
         from src.pages.settings_page import SettingsPage
-        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.show_page(SettingsPage))
+        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(SettingsPage))
         from src.pages.settings_page import SettingsPage
-        self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.show_page(SettingsPage))
-        
+        self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.update_page(SettingsPage))
+        from src.pages.login_page import LoginPage
+        self.logout_sidebar_btn = ttk.Button(self, text="Logout", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.show_page(LoginPage))
         #Sidebar logos
         #Dashboard icon
         home_img = Image.open("assets/logo/home.png")
@@ -75,6 +78,12 @@ class HomePage(ttk.Frame):
         photo = ImageTk.PhotoImage(settings_img)
         self.settingsIcon = Label(self, image=photo, bd=0)
         self.settingsIcon.image = photo
+        #Logout icon
+        logout_img = Image.open("assets/logo/logout.png")
+        logout_img = logout_img.resize((25, 25), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(logout_img)
+        self.logoutIcon = Label(self, image=photo, bd=0)
+        self.logoutIcon.image = photo
 
         #set sidebar buttons position
         self.home_sidebar_btn.place(relx=0, rely=0.2, anchor="w")
@@ -85,14 +94,16 @@ class HomePage(ttk.Frame):
         self.notificationIcon.place(relx=0.038, rely=0.3, anchor="w")
         self.settings_sidebar_btn.place(relx=0, rely=0.35, anchor="w")
         self.settingsIcon.place(relx=0.038, rely=0.35, anchor="w")
+        self.logout_sidebar_btn.place(relx=0, rely=0.4, anchor="w")
+        self.logoutIcon.place(relx=0.038, rely=0.4, anchor="w")
 
         #Dashboard page
         #Dashborad page title
         self.pageTitle = ttk.Label(self, text="Dashboard", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/30)))
         #User information
         #user greeting
-        username = controller.get_username()
-        user = User.get_information(username)
+        self.username = controller.get_username()
+        user = User.get_information(self.username)
         fullname = user.get_firstname()
         self.usergreetingTitle = ttk.Label(self, text="Hi, "+fullname, foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/38)))
         #user image
@@ -108,49 +119,132 @@ class HomePage(ttk.Frame):
         photo = ImageTk.PhotoImage(search_img)
         self.searchIcon = Label(self, image=photo, bd=0)
         self.searchIcon.image = photo
+        #filter button
+        s = ttk.Style()
+        s.configure('filter_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), padding=(30, 9), background='#4D5D69', foreground='#FFFFFF', borderwidth=0)
+        self.filterBTN = ttk.Button(self, text="Filter", style='filter_btn.TButton', bootstyle=PRIMARY, command=self.filter)
         #entry
         self.searchbarEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=46)
+        #stocks list title
+        self.stocklistTitle = ttk.Label(self, text="Stocks", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/60)))
+        #add stock
+        self.stocknameLabel = ttk.Label(self, text="stock name", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
+        self.descriptionLabel = ttk.Label(self, text="description", foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/70)))
+        #entries
+        self.stocknameEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=20)
+        self.descriptionEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=30)
         #Add stock button
         s = ttk.Style()
         s.configure('addstock_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), padding=(18, 9), background='#4D5D69', foreground='#FFFFFF', borderwidth=0)
         #create button
         self.addStockBTN = ttk.Button(self, text="Add stock", style='addstock_btn.TButton', bootstyle=PRIMARY, command=self.add_stock)
-        #stocks list title
-        self.stocklistTitle = ttk.Label(self, text="Stocks", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/60)))
 
         # create a Treeview widget including all user's stocks
         style = ttk.Style()
-        style.configure('stock.Treeview', rowheight=30, padding=5)
-        self.tree = ttk.Treeview(self, columns=('col1', 'col2'), show='headings', style='stock.Treeview')
+        style.configure('stock.Treeview', rowheight=30, padding=5, font=("Livvic Regular", 12))
+        # configure the Treeview heading style
+        style.configure("stock.Treeview.Heading", font=("Livvic Medium", 14), stretch=False)
+         # Create treeview
+        self.tree = ttk.Treeview(self, columns=("ID", "Stock Name", "Description", "Creation Date", "Date Modified", "Action", ""), show='headings', style='stock.Treeview', height=18)
+        self.tree.heading("ID", text="ID", anchor="w")
+        self.tree.heading("Stock Name", text="Stock Name", anchor="w")
+        self.tree.heading("Description", text="Description", anchor="w")
+        self.tree.heading("Creation Date", text="Creation Date", anchor="w")
+        self.tree.heading("Date Modified", text="Date Modified", anchor="w")
+        self.tree.heading("Action", text="Action", anchor="w")
+        self.tree.heading("", text="")
 
-        # set the column headings
-        self.tree.heading('col1', text='Column 1', anchor='w')
-        self.tree.heading('col2', text='Column 2', anchor='w')
+        self.tree.column("ID", width=80)
+        self.tree.column("Stock Name", width=220)
+        self.tree.column("Description", width=400)
+        self.tree.column("Creation Date", width=250)
+        self.tree.column("Date Modified", width=250)
+        self.tree.column("Action", width=80)
+        self.tree.column("", width=90)
 
-        # add some data to the Treeview
-        self.tree.insert('', '0', values=('Value 1.1', 'Value 1.2'))
-        self.tree.insert('', '1', values=('Value 2.1', 'Value 2.2'))
-        self.tree.insert('', '2', values=('Value 3.1', 'Value 3.2'))
+        #display all user's stocks
+        stocks = Stock.get_stocks(self.username)
+        for stock in stocks:
+            self.add_row(stock[0], stock[1], stock[2], stock[3], stock[4])
 
-        # set the column widths
-        self.tree.column('col1', width=100)
-        self.tree.column('col2', width=100)
-
+        self.tree.bind("<Button-1>", self.on_click)
 
         #set widgets position
-        self.pageTitle.place(relx=0.3, rely=0.08, anchor="center")
+        self.pageTitle.place(relx=0.23, rely=0.08, anchor="w")
         self.usergreetingTitle.place(relx=0.92, rely=0.08, anchor="e")
         self.profileIcon.place(relx=0.95, rely=0.08, anchor="center")
         self.searchIcon.place(relx=0.56, rely=0.19, anchor="center")
         self.searchIcon.lift()
         self.searchbarEntry.place(relx=0.405, rely=0.19, anchor="center")
-        self.addStockBTN.place(relx=0.615, rely=0.19, anchor="center")
-        self.stocklistTitle.place(relx=0.25, rely=0.26, anchor="center")
-        # place the Treeview widget into the tkinter window
-        self.tree.place(relx=0.45, rely=0.4, anchor="w")
+        self.filterBTN.place(relx=0.584, rely=0.19, anchor="w")
+        self.stocklistTitle.place(relx=0.229, rely=0.26, anchor="w")
+        #add stock
+        self.stocknameLabel.place(relx=0.23, rely=0.305, anchor="w")
+        self.stocknameEntry.place(relx=0.23, rely=0.345, anchor="w")
+        self.descriptionLabel.place(relx=0.39, rely=0.305, anchor="w")
+        self.descriptionEntry.place(relx=0.39, rely=0.345, anchor="w")
+        self.addStockBTN.place(relx=0.6235, rely=0.345, anchor="w")
+        #place the Treeview widget into the tkinter window
+        self.tree.place(relx=0.23, rely=0.4, anchor="nw")
 
         self.controller = controller
 
+    def add_row(self, id, stockname, description, creation_date, modified_date):
+        item_id = self.tree.insert("", "end", values=(id, stockname, description, creation_date, modified_date, "Edit", "Delete"))
+
+    def on_click(self, event):
+        item_id = self.tree.identify_row(event.y)
+        if item_id:
+            column = self.tree.identify_column(event.x)
+            id_value = self.tree.item(item_id, "values")[0]
+
+            if column == "#1" or column == "#2":
+                print("open: "+id_value)
+                self.controller.set_stock_id(id_value)
+                from src.pages.stock_page import StockPage
+                self.controller.update_page(StockPage)
+            elif column == "#6":
+                print("edit: "+id_value)
+                if ownership.get_role() == 'edit':
+                    self.controller.set_stock_id(id_value)
+                    from src.pages.stock_settings_page import StockSettingsPage
+                    self.controller.update_page(StockSettingsPage)
+                else:
+                    messagebox.showerror("Error", "Unable to edit stock. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
+            elif column == "#7":
+                ownership = Ownership.get_ownership(self.username, id_value)
+                if ownership.get_role() == 'edit':
+                    Stock.delete_stock(id_value)
+                    self.controller.update_page(HomePage)
+                else:
+                    messagebox.showerror("Error", "Unable to delete stock. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
+
+    def clear_form(self):
+        self.searchbarEntry.delete(0, 'end')
+        self.stocknameEntry.delete(0, 'end')
+        self.descriptionEntry.delete(0, 'end')
     
-    def add_stock():
-        pass
+    def filter(self):
+        self.tree.delete(*self.tree.get_children())
+        stocks = Stock.get_stocks_filter(self.username, self.searchbarEntry.get())
+        for stock in stocks:
+            self.add_row(stock[0], stock[1], stock[2], stock[3], stock[4])
+        self.clear_form()
+
+    def add_stock(self):
+        stockname = self.stocknameEntry.get()
+        description = self.descriptionEntry.get()
+
+        if stockname == '':
+            messagebox.showerror("Error", "stock name can not be empty")
+            return
+        
+        stock = Stock(stockname, description)
+        stock.add_stock()
+        stock_id = stock.get_stock_id()
+
+        ownership = Ownership(self.username, stock_id, 'edit')
+        ownership.add_stock_user()
+
+        self.clear_form()
+        self.controller.update_page(HomePage)

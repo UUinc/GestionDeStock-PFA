@@ -54,7 +54,9 @@ different screens to perform the desired action.
 
 ## Demo
 
-![Dairy_Inventory_Web_App](https://user-images.githubusercontent.com/63449913/229149190-6f7b5db5-05f6-4c87-b94f-3943a900bec7.png)
+![image](https://user-images.githubusercontent.com/63449913/236020014-9a487107-b479-42f2-891b-a1d2e57a0c58.png)
+![image](https://user-images.githubusercontent.com/63449913/236020304-60223fad-28e8-4ec3-a518-0eed47e99c39.png)
+
 
 ## Credits
 

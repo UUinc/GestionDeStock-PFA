@@ -62,6 +62,15 @@ class Product:
         product.set_product_id(result[0])
         conn.close()
         return product
+    
+    @staticmethod
+    def get_products(stock_id):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM product WHERE stock_id = %s', stock_id)
+        result = cur.fetchall()
+        conn.close()
+        return result
 
     def add_product(self, stock_id):
         conn = mysqlconnect()
@@ -93,7 +102,3 @@ class Product:
         print('product updated')
         
         conn.close()
-
-# testing
-p1 = Product.get_product(6)
-print(p1)

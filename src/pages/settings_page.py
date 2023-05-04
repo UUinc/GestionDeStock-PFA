@@ -33,18 +33,18 @@ class SettingsPage(ttk.Frame):
 
         #Sidebar buttons
         s = ttk.Style()
-        s.configure('sidebar_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), background='#9DAAAF', foreground='#38393B', borderwidth=0)
-        s.map('sidebar_btn.TButton', background=[('active', '!disabled', '#7d9198')], foreground=[('active', '!disabled', '#38393B')])
+        s.configure('sidebar_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), background='#BDC3C6', foreground='#38393B', borderwidth=0)
+        s.map('sidebar_btn.TButton', background=[('active', '!disabled', '#A7AEB1')], foreground=[('active', '!disabled', '#38393B')])
         s = ttk.Style()
-        s.configure('sidebar_disabled_btn.TButton', font=('Livvic Bold', int(SCR_HEIGHT/64)), background='#9DAAAF', foreground='#38393B', borderwidth=0)
-        s.map('sidebar_disabled_btn.TButton', background=[('active', '!disabled', '#7d9198')], foreground=[('active', '!disabled', '#38393B')])
+        s.configure('sidebar_disabled_btn.TButton', font=('Livvic Bold', int(SCR_HEIGHT/64)), background='#BDC3C6', foreground='#38393B', borderwidth=0)
+        s.map('sidebar_disabled_btn.TButton', background=[('active', '!disabled', '#A7AEB1')], foreground=[('active', '!disabled', '#38393B')])
         #create buttons
         from src.pages.home_page import HomePage
-        self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_btn.TButton', padding=(120, 10, 131, 10), command=lambda: controller.show_page(HomePage))
+        self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_btn.TButton', padding=(120, 10, 131, 10), command=lambda: controller.update_page(HomePage))
         from src.pages.stock_settings_page import StockSettingsPage
-        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_btn.TButton', padding=(120, 10, 150, 10), command=lambda: controller.show_page(StockSettingsPage))
+        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_btn.TButton', padding=(120, 10, 150, 10), command=lambda: controller.update_page(StockSettingsPage))
         from src.pages.home_page import HomePage
-        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.show_page(HomePage))
+        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(HomePage))
         self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_disabled_btn.TButton', padding=(120, 10, 153, 10))
         
         #Sidebar logos
@@ -86,21 +86,19 @@ class SettingsPage(ttk.Frame):
 
         #Settings page
         #Settings page title
-        self.pageTitle = ttk.Label(self, text="Settings", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/13)))
-
+        self.pageTitle = ttk.Label(self, text="Settings", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/30)))
         #set widgets position
-        self.pageTitle.place(relx=0.35, rely=0.10, anchor="center")
+        self.pageTitle.place(relx=0.23, rely=0.08, anchor="w")
 
        #body 
-        user_img = Image.open("assets/logo/user.png")
-        user_img = user_img.resize((180, 150), Image.ANTIALIAS)
+        user_img = Image.open("assets/logo/profile.png")
+        user_img = user_img.resize((180, 180), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(user_img)
         self.userIcon = Label(self, image=photo, bd=0)
         self.userIcon.image = photo
         self.userIcon.place(relx=0.57, rely=0.25, anchor="center")
         self.usernameTitle = ttk.Label(self, text="Username", foreground="#4D5D69", font=("Livvic Bold", int(SCR_HEIGHT/30)))
         self.usernameTitle.place(relx=0.57, rely=0.39, anchor="center")
-        
         
         self.firstnameLabel = ttk.Label(self, text="First name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
         self.firstnameLabel.place(relx=0.30, rely=0.45, anchor="w")
@@ -154,22 +152,5 @@ class SettingsPage(ttk.Frame):
         
         self.save_btn= ttk.Button(self, text="save", style='sidebar_btn.TButton', padding=(15,15),width=30)
         self.save_btn.place(relx=0.48, rely= 0.84, anchor="w")
-        
-        
-        
-     
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         self.controller = controller

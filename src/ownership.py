@@ -24,11 +24,14 @@ class Ownership:
         self.__role = role
         self.__ownership_start_date=current_timestamp()
 
+    def get_role(self):
+        return self.__role
+
     @staticmethod
     def get_ownership(username, stock_id):
         conn = mysqlconnect()
         cur = conn.cursor()
-        cur.execute('SELECT * FROM stockownership WHERE username = %s and stock_id = %s', username, stock_id)
+        cur.execute('SELECT * FROM stockownership WHERE username = %s and stock_id = %s', (username, stock_id))
         result = cur.fetchone()
         ownership = Ownership(result[0], result[1], result[3])
         ownership.set_ownership_start_date(result[2])
