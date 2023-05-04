@@ -46,8 +46,6 @@ class HomePage(ttk.Frame):
         #create buttons
         self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_disabled_btn.TButton', padding=(120, 10, 125, 10))
         from src.pages.stock_settings_page import StockSettingsPage
-        self.userslist_sidebar_btn = ttk.Button(self, text="Users list", style='sidebar_btn.TButton', padding=(120, 10, 150, 10), command=lambda: controller.update_page(StockSettingsPage))
-        from src.pages.settings_page import SettingsPage
         self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(SettingsPage))
         from src.pages.settings_page import SettingsPage
         self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.update_page(SettingsPage))
@@ -60,12 +58,6 @@ class HomePage(ttk.Frame):
         photo = ImageTk.PhotoImage(home_img)
         self.homeIcon = Label(self, image=photo, bd=0)
         self.homeIcon.image = photo
-        #Users list icon
-        userslist_img = Image.open("assets/logo/users_list.png")
-        userslist_img = userslist_img.resize((25, 25), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(userslist_img)
-        self.userslistIcon = Label(self, image=photo, bd=0)
-        self.userslistIcon.image = photo
         #Notification icon
         notification_img = Image.open("assets/logo/notification.png")
         notification_img = notification_img.resize((25, 25), Image.ANTIALIAS)
@@ -88,14 +80,12 @@ class HomePage(ttk.Frame):
         #set sidebar buttons position
         self.home_sidebar_btn.place(relx=0, rely=0.2, anchor="w")
         self.homeIcon.place(relx=0.038, rely=0.2, anchor="w")
-        self.userslist_sidebar_btn.place(relx=0, rely=0.25, anchor="w")
-        self.userslistIcon.place(relx=0.038, rely=0.25, anchor="w")
-        self.notification_sidebar_btn.place(relx=0, rely=0.3, anchor="w")
-        self.notificationIcon.place(relx=0.038, rely=0.3, anchor="w")
-        self.settings_sidebar_btn.place(relx=0, rely=0.35, anchor="w")
-        self.settingsIcon.place(relx=0.038, rely=0.35, anchor="w")
-        self.logout_sidebar_btn.place(relx=0, rely=0.4, anchor="w")
-        self.logoutIcon.place(relx=0.038, rely=0.4, anchor="w")
+        self.notification_sidebar_btn.place(relx=0, rely=0.25, anchor="w")
+        self.notificationIcon.place(relx=0.038, rely=0.25, anchor="w")
+        self.settings_sidebar_btn.place(relx=0, rely=0.3, anchor="w")
+        self.settingsIcon.place(relx=0.038, rely=0.3, anchor="w")
+        self.logout_sidebar_btn.place(relx=0, rely=0.35, anchor="w")
+        self.logoutIcon.place(relx=0.038, rely=0.35, anchor="w")
 
         #Dashboard page
         #Dashborad page title

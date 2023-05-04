@@ -9,6 +9,8 @@ from src.stock import Stock
 from src.ownership import Ownership
 from src.product import Product
 
+from src.utils import *
+
 class ProductPage(ttk.Frame):
     def __init__(self, parent, controller):
         ttk.Frame.__init__(self, parent)
@@ -110,52 +112,37 @@ class ProductPage(ttk.Frame):
         
         #product name
         self.product_id = controller.get_product_id()
-        state = "Add"
+        self.state = "Add"
         if self.product_id != -1:
-            state = "Edit"
+            self.state = "Edit"
+            product = Product.get_product(self.product_id)
         
-        product_name = state + " product"
+        product_name = self.state + " product"
         self.productStateTitle = ttk.Label(self, text=product_name, foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/62)))
 
         #body 
-        self.firstnameLabel = ttk.Label(self, text="First name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.firstname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31)
+        self.nameLabel = ttk.Label(self, text="name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.nameEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=67)
+        self.descriptionLabel = ttk.Label(self, text="description", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.descriptionEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=67)
+        self.unitpriceLabel = ttk.Label(self, text="unit price", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.unitpriceEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=67)
+        self.quantityLabel = ttk.Label(self, text="quantity", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.quantityEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=67)
+        self.thresholdLabel = ttk.Label(self, text="alert threshold", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
+        self.thresholdEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=67)
         
-        self.lastnameLabel = ttk.Label(self, text="Last name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.lastname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31)
-        
-        self.emailLabel = ttk.Label(self, text="Email", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.email_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=68,bootstyle=SECONDARY,background='#FFFFFF')
-        
-        #####
-        user_img = Image.open("assets/logo/email.png")
-        user_img = user_img.resize((30, 30), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(user_img)
-        self.emailIcon = Label(self, image=photo, bd=0)
-        self.emailIcon.image = photo
-        #####
-        
-        self.passwordLabel = ttk.Label(self, text="Password", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.password_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31, show="•" )
-        #####
-        user_img = Image.open("assets/logo/padlock.png")
-        user_img = user_img.resize((20, 20), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(user_img)
-        self.padlockIcon = Label(self, image=photo, bd=0)
-        self.padlockIcon.image = photo
-        #####
-        
-        self.newpasswordLabel = ttk.Label(self, text="New password", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.newpassword_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31, show="•")
-        #####
-        user_img = Image.open("assets/logo/padlock.png")
-        user_img = user_img.resize((20, 20), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(user_img)
-        self.userIcon = Label(self, image=photo, bd=0)
-        self.userIcon.image = photo
-        #####
-        
-        self.save_btn= ttk.Button(self, text=state, style='sidebar_btn.TButton', padding=(10,10),width=20)
+        if self.product_id != -1:
+            self.nameEntry.insert(0, product.get_name())
+            self.descriptionEntry.insert(0, product.get_description())
+            self.unitpriceEntry.insert(0, product.get_unit_price())
+            self.quantityEntry.insert(0, product.get_quantity())
+            self.thresholdEntry.insert(0, product.get_alert_threshold())
+
+        #save button
+        s = ttk.Style()
+        s.configure('save_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/50)), padding=(100, 9), background='#4D5D69', foreground='#FFFFFF', borderwidth=0)
+        self.save_btn= ttk.Button(self, text=self.state, style='save_btn.TButton', bootstyle=PRIMARY, command=self.save)
 
         #set widgets position
         self.pageTitle.place(relx=0.23, rely=0.08, anchor="w")
@@ -164,19 +151,52 @@ class ProductPage(ttk.Frame):
         self.stocknameTitle.place(relx=0.23, rely=0.14, anchor="w")
         self.productStateTitle.place(relx=0.231, rely=0.18, anchor="w")
 
-        self.firstnameLabel.place(relx=0.28, rely=0.45, anchor="w")
-        self.firstname_entry.place(relx=0.28, rely=0.50, anchor="w")
-        self.lastnameLabel.place(relx=0.60, rely=0.45, anchor="w")
-        self.lastname_entry.place(relx=0.60, rely=0.50, anchor="w")
-        self.emailLabel.place(relx=0.28, rely=0.55, anchor="w")
-        self.email_entry.place(relx=0.28, rely=0.60, anchor="w")
-        self.emailIcon.place(relx=0.86, rely=0.60, anchor="center")
-        self.passwordLabel.place(relx=0.28, rely=0.65, anchor="w")
-        self.password_entry.place(relx=0.28, rely=0.70, anchor="w")
-        self.padlockIcon.place(relx=0.54, rely=0.70, anchor="center")
-        self.newpasswordLabel.place(relx=0.60, rely=0.65, anchor="w")
-        self.newpassword_entry.place(relx=0.60, rely=0.70, anchor="w")
-        self.userIcon.place(relx=0.86, rely=0.70, anchor="center")
-        self.save_btn.place(relx=0.50, rely= 0.84, anchor="w")
+        self.nameLabel.place(relx=0.28, rely=0.25, anchor="w")
+        self.nameEntry.place(relx=0.28, rely=0.3, anchor="w")
+        self.descriptionLabel.place(relx=0.28, rely=0.35, anchor="w")
+        self.descriptionEntry.place(relx=0.28, rely=0.4, anchor="w")
+        self.unitpriceLabel.place(relx=0.28, rely=0.45, anchor="w")
+        self.unitpriceEntry.place(relx=0.28, rely=0.5, anchor="w")
+        self.quantityLabel.place(relx=0.28, rely=0.55, anchor="w")
+        self.quantityEntry.place(relx=0.28, rely=0.6, anchor="w")
+        self.thresholdLabel.place(relx=0.28, rely=0.65, anchor="w")
+        self.thresholdEntry.place(relx=0.28, rely=0.7, anchor="w")
+        
+        self.save_btn.place(relx=0.51, rely= 0.84, anchor="w")
         
         self.controller = controller
+
+    def clear_form(self):
+        self.nameEntry.delete(0, 'end')
+        self.descriptionEntry.delete(0, 'end')
+        self.unitpriceEntry.delete(0, 'end')
+        self.quantityEntry.delete(0, 'end')
+        self.thresholdEntry.delete(0, 'end')
+
+    def save(self):
+        name = self.nameEntry.get()
+        description = self.descriptionEntry.get()
+        unitprice = self.unitpriceEntry.get()
+        quantity = self.quantityEntry.get()
+        threshold = self.thresholdEntry.get()
+
+        if self.state == 'Add':
+            product = Product(name, description, unitprice, quantity, threshold)
+            product.add_product(self.stock_id)
+            self.clear_form()
+        else:
+            product = Product(name, description, unitprice, quantity, threshold)
+            oldProduct = Product.get_product(self.product_id)
+
+            product.set_last_entry_date(oldProduct.get_last_entry_date())
+            product.set_last_release_date(oldProduct.get_last_release_date())
+
+            if oldProduct.get_quantity() < int(quantity):
+                product.set_last_entry_date(current_timestamp())
+            elif oldProduct.get_quantity() > int(quantity):
+                product.set_last_release_date(current_timestamp())
+
+            product.update_product(self.stock_id, self.product_id)
+        
+        from src.pages.stock_page import StockPage
+        self.controller.update_page(StockPage)
