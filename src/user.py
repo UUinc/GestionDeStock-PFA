@@ -9,7 +9,7 @@ class User:
         self.__last_name = last_name
         self.__email = email
         self.__password = hash_password(password)
-        
+
     @staticmethod
     def login(username, password):
         conn = mysqlconnect()
@@ -40,21 +40,51 @@ class User:
         result = cur.fetchone()
         try:
             user = User(result[0], result[1], result[2], result[3], result[4])
+            user.set_password(result[4])
         except:
             user = User("", "", "", "", "")
         conn.close()
         return user
+
+    def update_information(self):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute("UPDATE user SET first_name=%s, last_name=%s, email=%s WHERE username=%s", (self.__first_name, self.__last_name, self.__email, self.__username))
+        conn.commit()
+        print("updated")
+        conn.close()
+    
+    def update_password(self, password):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute("UPDATE user SET password=%s WHERE username=%s", (hash_password(password), self.__username))
+        conn.commit()
+        print("updated")
+        conn.close()
      
-    
-    
     def get_firstname(self):
         return self.__first_name
+
+    def set_firstname(self, first_name):
+        self.__first_name = first_name
     
     def get_lastname(self):
         return self.__last_name
 
+    def set_lastname(self, last_name):
+        self.__last_name = last_name
+
     def get_email(self):
         return self.__email
+
+    def set_email(self, email):
+        self.__email = email
+
+    def set_password(self, password):
+        self.__password = password
+
+    def check_password(self, password):
+        return self.__password == hash_password(password)
 
     #Form validation
     def verif_user(username):
