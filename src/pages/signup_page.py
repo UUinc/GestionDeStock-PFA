@@ -4,7 +4,7 @@ from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
-from src.user import User
+from src.user import User, validate_username, validate_email, validate_password
 
 class SignupPage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -131,6 +131,23 @@ class SignupPage(ttk.Frame):
         lastname = self.lastnameEntry.get().strip()
         email = self.emailEntry.get().strip()
         password = self.passwordEntry.get()
+
+        #validate inputs
+        if not validate_username(username):
+            messagebox.showerror("Error", "The username entered is invalid. Please ensure that the username is between 3 and 20 characters long and only contains letters, numbers, and underscores.")
+            return
+        if firstname.strip() == '':
+            messagebox.showerror("Error", "First name cannot be left blank. Please enter your first name to continue.")
+            return
+        if lastname.strip() == '':
+            messagebox.showerror("Error", "Last name cannot be left blank. Please enter your last name to continue.")
+            return
+        if not validate_email(email):
+            messagebox.showerror("Error", "The email entered is invalid. Please ensure that the email address is in a valid format (e.g., example@domain.com).")
+            return
+        if not validate_password(password):
+            messagebox.showerror("Error", "Password must be between 8 and 20 characters and contain at least one lowercase letter, one uppercase letter, one number, and one special character (/ $ % # @ . _ !).")
+            return
 
         u = User(username, firstname, lastname, email, password)
 

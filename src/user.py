@@ -84,21 +84,18 @@ class User:
     def check_password(self, password):
         return self.__password == hash_password(password)
 
-    #Form validation
-    def verif_user(username):
-        if re.match(r"^[a-zA-Z0-9_]{3,20}$", username):
-            print(f"{username} is a valid username")
-        else:
-            print(f"{username} is not a valid username")
-                
-    def verif_email(email):
-        if re.match(r"^(?=.{1,256}$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
-            print(f"{email} is a valid email")
-        else:
-            print(f"{email} is not a valid email")
+#Form validation
+def validate_username(username):
+    if not re.match(r"^[a-zA-Z0-9_]{3,20}$", username):
+        return False
+    return True
             
-    def verif_password(password):
-        if re.match(r"^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[/$%#@._!])[\w\d/$%#@._!]{8,20}$", password):
-            print("Valid")
-        else:
-            print("Not valid,password must have [a-z] && [A-Z] && [0-9] && [/$%#@._!] and between 8 and 20 characters") 
+def validate_email(email):
+    if not re.match(r"^(?=.{1,256}$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
+        return False
+    return True
+        
+def validate_password(password):
+    if not re.match(r"^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[/$%#@._!])[\w\d/$%#@._!]{8,20}$", password):
+        return False
+    return True
