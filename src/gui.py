@@ -8,6 +8,7 @@ from src.pages.home_page import HomePage
 from src.pages.settings_page import SettingsPage
 from src.pages.stock_page import StockPage
 from src.pages.stock_settings_page import StockSettingsPage
+from src.pages.notification_page import NotificationPage
 
 class GUI:
     def __init__(self):
@@ -25,7 +26,7 @@ class GUI:
         self.container.pack(fill="both", expand=True)
 
         self.pages = {}
-        for page_name in (LoginPage, SignupPage, HomePage, SettingsPage, StockPage, StockSettingsPage):
+        for page_name in (LoginPage, SignupPage, HomePage, SettingsPage, StockPage, StockSettingsPage, NotificationPage):
             page = page_name(self.container, self)
             self.pages[page_name] = page
             page.grid(row=0, column=0, sticky="nsew")

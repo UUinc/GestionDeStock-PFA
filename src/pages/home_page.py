@@ -45,8 +45,8 @@ class HomePage(ttk.Frame):
         s.map('sidebar_disabled_btn.TButton', background=[('active', '!disabled', '#A7AEB1')], foreground=[('active', '!disabled', '#38393B')])
         #create buttons
         self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_disabled_btn.TButton', padding=(120, 10, 125, 10))
-        from src.pages.stock_settings_page import StockSettingsPage
-        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(SettingsPage))
+        from src.pages.notification_page import NotificationPage
+        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(NotificationPage))
         from src.pages.settings_page import SettingsPage
         self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.update_page(SettingsPage))
         from src.pages.login_page import LoginPage

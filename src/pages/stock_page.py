@@ -46,8 +46,8 @@ class StockPage(ttk.Frame):
         #create buttons
         from src.pages.home_page import HomePage
         self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_btn.TButton', padding=(120, 10, 125, 10), command=lambda: controller.update_page(HomePage))
-        from src.pages.settings_page import SettingsPage
-        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(SettingsPage))
+        from src.pages.notification_page import NotificationPage
+        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(NotificationPage))
         from src.pages.settings_page import SettingsPage
         self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.update_page(SettingsPage))
         from src.pages.login_page import LoginPage
@@ -241,4 +241,3 @@ class StockPage(ttk.Frame):
             self.controller.update_page(ProductPage)
         else:
             messagebox.showerror("Error", "Unable to edit product. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
-        pass

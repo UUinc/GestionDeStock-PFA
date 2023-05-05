@@ -138,3 +138,12 @@ class Product:
         conn.commit()
         print('product updated')
         conn.close()
+
+    @staticmethod
+    def get_product_notification(username):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute('SELECT s.name, p.name, p.quantity, p.alert_threshold, p.last_entry_date, p.last_release_date FROM stockownership AS o JOIN product AS p ON o.stock_id = p.stock_id JOIN stock AS s ON p.stock_id = s.stock_id WHERE username = %s AND p.quantity <= p.alert_threshold ORDER BY s.name', username)
+        result = cur.fetchall()
+        conn.close()
+        return result

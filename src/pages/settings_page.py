@@ -41,8 +41,8 @@ class SettingsPage(ttk.Frame):
         #create buttons
         from src.pages.home_page import HomePage
         self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_btn.TButton', padding=(120, 10, 131, 10), command=lambda: controller.update_page(HomePage))
-        from src.pages.home_page import HomePage
-        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(HomePage))
+        from src.pages.notification_page import NotificationPage
+        self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(NotificationPage))
         self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_disabled_btn.TButton', padding=(120, 10, 153, 10))
         from src.pages.login_page import LoginPage
         self.logout_sidebar_btn = ttk.Button(self, text="Logout", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.show_page(LoginPage))
