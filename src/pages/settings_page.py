@@ -104,13 +104,13 @@ class SettingsPage(ttk.Frame):
         self.firstname_entry.place(relx=0.28, rely=0.50, anchor="w")
         
         self.lastnameLabel = ttk.Label(self, text="Last name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.lastnameLabel.place(relx=0.60, rely=0.45, anchor="w")
+        self.lastnameLabel.place(relx=0.599, rely=0.45, anchor="w")
         self.lastname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31)
-        self.lastname_entry.place(relx=0.60, rely=0.50, anchor="w")
+        self.lastname_entry.place(relx=0.599, rely=0.50, anchor="w")
         
         self.emailLabel = ttk.Label(self, text="Email", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
         self.emailLabel.place(relx=0.28, rely=0.55, anchor="w")
-        self.email_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=68,bootstyle=SECONDARY,background='#FFFFFF')
+        self.email_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=67,bootstyle=SECONDARY,background='#FFFFFF')
         self.email_entry.place(relx=0.28, rely=0.60, anchor="w")
         
         #####
@@ -136,9 +136,9 @@ class SettingsPage(ttk.Frame):
         #####
         
         self.newpasswordLabel = ttk.Label(self, text="New password", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.newpasswordLabel.place(relx=0.60, rely=0.65, anchor="w")
+        self.newpasswordLabel.place(relx=0.599, rely=0.65, anchor="w")
         self.newpassword_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31, show="•")
-        self.newpassword_entry.place(relx=0.60, rely=0.70, anchor="w")
+        self.newpassword_entry.place(relx=0.599, rely=0.70, anchor="w")
         #####
         user_img = Image.open("assets/logo/padlock.png")
         user_img = user_img.resize((20, 20), Image.ANTIALIAS)
