@@ -11,6 +11,9 @@ class SettingsPage(ttk.Frame):
         ttk.Frame.__init__(self, parent)
 
         SCR_HEIGHT = self.winfo_screenheight()
+
+        self.show_password = False
+        self.show_new_password = False
         #Background left side
         # Load background image file
         img = Image.open("assets/background/sidebar.png")
@@ -47,7 +50,7 @@ class SettingsPage(ttk.Frame):
         self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(NotificationPage))
         self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_disabled_btn.TButton', padding=(120, 10, 153, 10))
         from src.pages.login_page import LoginPage
-        self.logout_sidebar_btn = ttk.Button(self, text="Logout", style='sidebar_btn.TButton', padding=(120, 10, 172, 10), command=lambda: controller.show_page(LoginPage))
+        self.logout_sidebar_btn = ttk.Button(self, text="Logout", style='sidebar_btn.TButton', padding=(120, 10, 172, 10), command=lambda: controller.update_page(LoginPage))
         #Sidebar logos
         #Dashboard icon
         home_img = Image.open("assets/logo/home.png")
@@ -139,12 +142,18 @@ class SettingsPage(ttk.Frame):
         self.password_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31, show="•" )
         self.password_entry.place(relx=0.28, rely=0.70, anchor="w")
         #####
-        user_img = Image.open("assets/logo/padlock.png")
-        user_img = user_img.resize((30, 30), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(user_img)
-        self.userIcon = Label(self, image=photo, bd=0)
-        self.userIcon.image = photo
-        self.userIcon.place(relx=0.546, rely=0.70, anchor="center")
+        #password icons
+        hide_img = Image.open("assets/logo/hide.png")
+        hide_img = hide_img.resize((30, 30), Image.ANTIALIAS)
+        self.photo_hide = ImageTk.PhotoImage(hide_img)
+        show_img = Image.open("assets/logo/show.png")
+        show_img = show_img.resize((30, 30), Image.ANTIALIAS)
+        self.photo_show = ImageTk.PhotoImage(show_img)
+
+        self.passwordIcon = Label(self, image=self.photo_hide, bd=0)
+        self.passwordIcon.image = self.photo_hide
+        self.passwordIcon.bind("<Button-1>", self.toggle_password_visibility)
+        self.passwordIcon.place(relx=0.546, rely=0.70, anchor="center")
         #####
         
         self.newpasswordLabel = ttk.Label(self, text="New password", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
@@ -152,12 +161,10 @@ class SettingsPage(ttk.Frame):
         self.newpassword_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/50)), width=31, show="•")
         self.newpassword_entry.place(relx=0.599, rely=0.70, anchor="w")
         #####
-        user_img = Image.open("assets/logo/padlock.png")
-        user_img = user_img.resize((30, 30), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(user_img)
-        self.userIcon = Label(self, image=photo, bd=0)
-        self.userIcon.image = photo
-        self.userIcon.place(relx=0.865, rely=0.70, anchor="center")
+        self.newpasswordIcon = Label(self, image=self.photo_hide, bd=0)
+        self.newpasswordIcon.image = self.photo_hide
+        self.newpasswordIcon.bind("<Button-1>", self.toggle_newpassword_visibility)
+        self.newpasswordIcon.place(relx=0.865, rely=0.70, anchor="center")
         #####
         
         s = ttk.Style()
@@ -186,3 +193,23 @@ class SettingsPage(ttk.Frame):
 
         user.update_information()
         messagebox.showinfo(title="Settings", message="Information updated")
+
+    def toggle_password_visibility(self, event):
+        if self.show_password:
+            self.passwordIcon.configure(image=self.photo_show)
+            self.password_entry.config(show="")
+        else:
+            self.passwordIcon.configure(image=self.photo_hide)
+            self.password_entry.config(show="•")
+
+        self.show_password = not self.show_password
+
+    def toggle_newpassword_visibility(self, event):
+        if self.show_new_password:
+            self.newpasswordIcon.configure(image=self.photo_show)
+            self.newpassword_entry.config(show="")
+        else:
+            self.newpasswordIcon.configure(image=self.photo_hide)
+            self.newpassword_entry.config(show="•")
+
+        self.show_new_password = not self.show_new_password

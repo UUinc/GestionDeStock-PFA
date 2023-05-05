@@ -12,6 +12,8 @@ class LoginPage(ttk.Frame):
 
         SCR_HEIGHT = self.winfo_screenheight()
 
+        self.show_password = False
+
         #Background left side
         # Load background image file
         img = Image.open("assets/background/background.png")
@@ -49,12 +51,17 @@ class LoginPage(ttk.Frame):
         photo = ImageTk.PhotoImage(username_img)
         self.usernameIcon = Label(self, image=photo, bd=0)
         self.usernameIcon.image = photo
-        #padlock icon
-        password_img = Image.open("assets/logo/padlock.png")
-        password_img = password_img.resize((25, 25), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(password_img)
-        self.passwordIcon = Label(self, image=photo, bd=0)
-        self.passwordIcon.image = photo
+        #password icons
+        hide_img = Image.open("assets/logo/hide.png")
+        hide_img = hide_img.resize((25, 25), Image.ANTIALIAS)
+        self.photo_hide = ImageTk.PhotoImage(hide_img)
+        show_img = Image.open("assets/logo/show.png")
+        show_img = show_img.resize((25, 25), Image.ANTIALIAS)
+        self.photo_show = ImageTk.PhotoImage(show_img)
+
+        self.passwordIcon = Label(self, image=self.photo_hide, bd=0)
+        self.passwordIcon.image = self.photo_hide
+        self.passwordIcon.bind("<Button-1>", self.toggle_password_visibility)
         #entries
         self.usernameEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=36)
         self.passwordEntry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=36, show="•")
@@ -118,4 +125,14 @@ class LoginPage(ttk.Frame):
     def signup(self):
         self.clear_form()
         from src.pages.signup_page import SignupPage
-        self.controller.show_page(SignupPage)
+        self.controller.update_page(SignupPage)
+
+    def toggle_password_visibility(self, event):
+        if self.show_password:
+            self.passwordIcon.configure(image=self.photo_show)
+            self.passwordEntry.config(show="")
+        else:
+            self.passwordIcon.configure(image=self.photo_hide)
+            self.passwordEntry.config(show="•")
+
+        self.show_password = not self.show_password
