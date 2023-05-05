@@ -100,30 +100,15 @@ class Stock:
         conn.close()
         return result
 
-    def update_stock_name(self):
+    def update_stock(self):
         conn = mysqlconnect()
         cur = conn.cursor()
-
         cur.execute('''UPDATE stock 
-                       SET name = %s , last_edit= %s
+                       SET name = %s, description = %s, last_edit= %s
                        WHERE stock_id = %s
-                    ''', (self.__name,self.__last_edit,self.__stock_id))
+                    ''', (self.__name, self.__description, self.__last_edit, self.__stock_id))
         conn.commit()
-        print('stock name updated')
-        
-        conn.close()
-
-    def update_stock_description(self):
-        conn = mysqlconnect()
-        cur = conn.cursor()
-
-        cur.execute('''UPDATE stock 
-                       SET description = %s, last_edit= %s
-                       WHERE stock_id = %s
-                    ''', (self.__description,self.__last_edit,self.__stock_id))
-        conn.commit()
-        print('stock description updated')
-        
+        print('stock updated')
         conn.close()
 
     @staticmethod

@@ -7,7 +7,6 @@ from ttkbootstrap.constants import *
 from src.user import User
 from src.stock import Stock
 from src.ownership import Ownership
-from src.stock import Stock
 
 from tkinter.font import Font
 
@@ -106,8 +105,8 @@ class StockSettingsPage(ttk.Frame):
         #set widgets position
         self.pageSubtitle.place(relx=0.23, rely=0.14, anchor="w")
         #Hi,user 
-        username = controller.get_username()
-        user = User.get_information(username)
+        self.username = controller.get_username()
+        user = User.get_information(self.username)
         firstname = user.get_firstname()
         self.user = ttk.Label(self, text="Hi, "+firstname, foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/38)))
         self.user.place(relx=0.92, rely=0.08, anchor="e")
@@ -136,7 +135,7 @@ class StockSettingsPage(ttk.Frame):
         #Button save
         s = ttk.Style()
         s.configure('stock_settings_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), padding=(10,10), width=20, background='#4D5D69', foreground='#FFFFFF', borderwidth=0)
-        self.save_btn= ttk.Button(self, text="save", style='stock_settings_btn.TButton', bootstyle=PRIMARY)
+        self.save_btn= ttk.Button(self, text="save", style='stock_settings_btn.TButton', bootstyle=PRIMARY, command=self.save)
         self.save_btn.place(relx=0.75, rely= 0.35, anchor="w")
         #username section
         self.usernameLabel = ttk.Label(self, text="username", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
@@ -155,12 +154,9 @@ class StockSettingsPage(ttk.Frame):
         self.role = ttk.Combobox(self, state="readonly", style='role.TCombobox', values=["edit","view"], font=('Livvic Regular', int(SCR_HEIGHT/60)), width=30)
         self.role.set("edit")
         self.role.place(relx=0.49, rely=0.45, anchor="w")
-        # add user button function
-        def add():
-            user=Ownership
-            user.add_stock_user
+       
         #Button add user
-        self.add_user_btn= ttk.Button(self, text="add user", style='stock_settings_btn.TButton', bootstyle=PRIMARY)
+        self.add_user_btn= ttk.Button(self, text="add user", style='stock_settings_btn.TButton', bootstyle=PRIMARY, command=self.add_user)
         self.add_user_btn.place(relx=0.75, rely= 0.45, anchor="w")
         #users list section
         self.list= ttk.Label(self, text="users list", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/60)))
@@ -203,18 +199,19 @@ class StockSettingsPage(ttk.Frame):
         if item_id:
             column = self.tree.identify_column(event.x)
             username = self.tree.item(item_id, "values")[0]
-            ownership = Ownership.get_ownership(username, self.stock_id)
+            ownership = Ownership.get_ownership(self.username, self.stock_id)
            
             if column == "#4":
                 print("edit: "+username)
                 if ownership.get_role() == 'edit':
-                    pass
+                    self.edit_role(username)
+                    self.controller.update_page(StockSettingsPage)
                 else:
                     messagebox.showerror("Error", "Unable to edit ownership. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
             elif column == "#5":
                 if ownership.get_role() == 'edit':
-                    Ownership.remove_stock_user(username, self.stock_id)
-                    self.controller.update_page(StockSettingsPage)
+                    if self.remove_ownership(username):
+                        self.controller.update_page(StockSettingsPage)
                 else:
                     messagebox.showerror("Error", "Unable to delete ownership. Your account does not have the necessary permissions to perform this action. Please contact your stock administrator for assistance")
 
@@ -222,3 +219,60 @@ class StockSettingsPage(ttk.Frame):
         self.stockname_entry.delete(0, 'end')
         self.description_entry.delete(0, 'end')
         self.username_entry.delete(0, 'end')
+
+    def save(self):
+        name = self.stockname_entry.get()
+        description = self.description_entry.get()
+        
+        stock = Stock.get_stock(self.stock_id)
+        stock.set_name(name)
+        stock.set_description(description)
+
+        stock.update_stock()
+        messagebox.showinfo(title="Stock Settings", message="Information updated")
+        self.controller.update_page(StockSettingsPage)
+
+
+    def add_user(self):
+        username = self.username_entry.get()
+        role = self.role.get()
+
+        ownership = Ownership(username, self.stock_id, role)
+
+        try:
+            ownership.add_stock_user()
+            self.controller.update_page(StockSettingsPage)
+        except Exception as e:
+            error = ""
+            if e.args[0] == 1452:
+                match e.args[1].split()[17].strip('(').strip(')').strip('`'):
+                    case 'username':
+                        error = "Username does not exist"
+                    case 'stock_id':
+                        error = "Stock id does not exist"
+                    case _:
+                        error = "error occured!"
+            elif e.args[1].split()[5].strip('\'') == "PRIMARY":
+                error = "username already exists"
+
+            messagebox.showerror("Error", error)
+            
+    def edit_role(self, username):
+        ownership = Ownership.get_ownership(username, self.stock_id)
+        if ownership.switch_role(self.stock_id):
+            ownership.update_stock_user()
+        else:
+            messagebox.showerror("Error", "Unable to edit role. This user may be a stock administrator or have critical permissions that cannot be changed.")
+
+    def remove_ownership(self, username):
+        ownership = Ownership.get_ownership(username, self.stock_id)
+        if ownership.get_role_edit_count(self.stock_id) > 1:
+            Ownership.remove_stock_user(username, self.stock_id)
+            if username == self.username:
+                from src.pages.home_page import HomePage
+                self.controller.update_page(HomePage)
+                return False
+        else:
+            messagebox.showerror("Error", "Unable to delete user. This user may be a stock administrator or have critical permissions that cannot be revoked.")
+        
+        return True

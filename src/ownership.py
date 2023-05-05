@@ -20,12 +20,23 @@ class Ownership:
     def set_ownership_start_date(self, ownership_start_date):
         self.__ownership_start_date = ownership_start_date
 
-    def change_role(self, role):
+    def set_role(self, role):
         self.__role = role
         self.__ownership_start_date=current_timestamp()
 
     def get_role(self):
         return self.__role
+
+    def switch_role(self, stock_id):
+        if self.__role == 'edit':
+            total = self.get_role_edit_count(stock_id)
+            if total > 1:
+                self.set_role('view')
+                return True
+            return False
+        else:
+            self.set_role('edit')
+            return True
 
     @staticmethod
     def get_ownership(username, stock_id):
@@ -41,25 +52,10 @@ class Ownership:
     def add_stock_user(self):
         conn = mysqlconnect()
         cur = conn.cursor()
-        try:
-            cur.execute('''INSERT INTO stockownership(username, stock_id, ownership_start_date, role) 
+        cur.execute('''INSERT INTO stockownership(username, stock_id, ownership_start_date, role) 
                        VALUES(%s, %s, %s, %s)''', 
                     (self.__username, self.__stock_id, self.__ownership_start_date, self.__role))
-            conn.commit()
-            print('new stock user added')
-            return True
-        except Exception as e:
-            if e.args[0] == 1452:
-                match e.args[1].split()[17].strip('(').strip(')').strip('`'):
-                    case 'username':
-                        print("Username does not exist")
-                    case 'stock_id':
-                        print("Stock id does not exist")
-                    case _:
-                        print("error occured!")
-            elif e.args[1].split()[5].strip('\'') == "PRIMARY":
-                print("Primary key already exist")
-            return False
+        conn.commit()
         conn.close()
 
     @staticmethod
@@ -71,7 +67,7 @@ class Ownership:
         print('stock user removed')
         conn.close()
 
-    def edit_stock_user(self):
+    def update_stock_user(self):
         conn = mysqlconnect()
         cur = conn.cursor()
         cur.execute('''UPDATE stockownership 
@@ -103,5 +99,10 @@ class Ownership:
         conn.close()
         return username,email,role
 
-# test = Ownership("yousra.eb", 3, "edit")
-# test.add_stock_user()
+    def get_role_edit_count(self, stock_id):
+        conn = mysqlconnect()
+        cur = conn.cursor()
+        cur.execute("SELECT COUNT(*) FROM stockownership WHERE stock_id = %s AND role = 'edit'", stock_id)
+        result = cur.fetchone()[0]
+        conn.close()
+        return result
