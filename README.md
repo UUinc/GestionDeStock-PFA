@@ -54,8 +54,8 @@ different screens to perform the desired action.
 
 ## Demo
 
-![image](https://user-images.githubusercontent.com/63449913/236020014-9a487107-b479-42f2-891b-a1d2e57a0c58.png)
-![image](https://user-images.githubusercontent.com/63449913/236020304-60223fad-28e8-4ec3-a518-0eed47e99c39.png)
+![image](https://user-images.githubusercontent.com/63449913/236535007-5aa5ef64-f3c1-484b-b6fd-f83a4b59d3e0.png)
+![image](https://user-images.githubusercontent.com/63449913/236535158-52b791f3-a56a-44df-8404-755c888079f4.png)
 
 
 ## Credits
