@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `product` (
   `product_id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
-  `description` varchar(20) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
   `unit_price` float NOT NULL,
   `quantity` int(11) NOT NULL,
   `alert_threshold` int(11) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE `product` (
 CREATE TABLE `stock` (
   `stock_id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
-  `description` varchar(20) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
   `last_edit` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `creation_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -120,13 +120,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -143,7 +143,7 @@ ALTER TABLE `product`
 --
 ALTER TABLE `stockownership`
   ADD CONSTRAINT `stockownership_ibfk_1` FOREIGN KEY (`username`) REFERENCES `user` (`username`),
-  ADD CONSTRAINT `stockownership_ibfk_2` FOREIGN KEY (`stock_id`) REFERENCES `stock` (`stock_id`);
+  ADD CONSTRAINT `stockownership_ibfk_2` FOREIGN KEY (`stock_id`) REFERENCES `stock` (`stock_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
