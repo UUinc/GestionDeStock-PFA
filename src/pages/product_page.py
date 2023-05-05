@@ -45,13 +45,13 @@ class ProductPage(ttk.Frame):
         s.map('sidebar_btn.TButton', background=[('active', '!disabled', '#A7AEB1')], foreground=[('active', '!disabled', '#38393B')])
         #create buttons
         from src.pages.home_page import HomePage
-        self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_btn.TButton', padding=(120, 10, 125, 10), command=lambda: controller.update_page(HomePage))
+        self.home_sidebar_btn = ttk.Button(self, text="Dashboard", style='sidebar_btn.TButton', padding=(120, 10, 132, 10), command=lambda: controller.update_page(HomePage))
         from src.pages.notification_page import NotificationPage
         self.notification_sidebar_btn = ttk.Button(self, text="Notification", style='sidebar_btn.TButton', padding=(120, 10, 127, 10), command=lambda: controller.update_page(NotificationPage))
         from src.pages.settings_page import SettingsPage
         self.settings_sidebar_btn = ttk.Button(self, text="Settings", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.update_page(SettingsPage))
         from src.pages.login_page import LoginPage
-        self.logout_sidebar_btn = ttk.Button(self, text="Logout", style='sidebar_btn.TButton', padding=(120, 10, 160, 10), command=lambda: controller.show_page(LoginPage))
+        self.logout_sidebar_btn = ttk.Button(self, text="Logout", style='sidebar_btn.TButton', padding=(120, 10, 172, 10), command=lambda: controller.show_page(LoginPage))
         #Sidebar logos
         #Dashboard icon
         home_img = Image.open("assets/logo/home.png")
