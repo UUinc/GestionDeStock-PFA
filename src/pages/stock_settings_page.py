@@ -9,6 +9,8 @@ from src.stock import Stock
 from src.ownership import Ownership
 from src.stock import Stock
 
+from tkinter.font import Font
+
 class StockSettingsPage(ttk.Frame):
     def __init__(self, parent, controller):
         ttk.Frame.__init__(self, parent)
@@ -122,17 +124,19 @@ class StockSettingsPage(ttk.Frame):
         #stockname section
         self.stocknameLabel = ttk.Label(self, text="name", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
         self.stocknameLabel.place(relx=0.25, rely=0.2, anchor="w")
-        self.stockname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=62)
+        self.stockname_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=64)
         self.stockname_entry.insert(0, stock_name)
         self.stockname_entry.place(relx=0.25, rely=0.25, anchor="w")
         #description section
         self.descriptionLabel = ttk.Label(self, text="description", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
         self.descriptionLabel.place(relx=0.25, rely=0.3, anchor="w")
-        self.description_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=62)
+        self.description_entry = ttk.Entry(self, font=('Livvic Regular', int(SCR_HEIGHT/58)), width=64)
         self.description_entry.insert(0, stock_description)
         self.description_entry.place(relx=0.25, rely=0.35, anchor="w")
         #Button save
-        self.save_btn= ttk.Button(self, text="save", style='sidebar_btn.TButton', padding=(10,10),width=20)
+        s = ttk.Style()
+        s.configure('stock_settings_btn.TButton', font=('Livvic Medium', int(SCR_HEIGHT/64)), padding=(10,10), width=20, background='#4D5D69', foreground='#FFFFFF', borderwidth=0)
+        self.save_btn= ttk.Button(self, text="save", style='stock_settings_btn.TButton', bootstyle=PRIMARY)
         self.save_btn.place(relx=0.75, rely= 0.35, anchor="w")
         #username section
         self.usernameLabel = ttk.Label(self, text="username", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
@@ -142,15 +146,21 @@ class StockSettingsPage(ttk.Frame):
         #role
         self.roleLabel = ttk.Label(self, text="role", foreground="#4D5D69", font=("Livvic Regular", int(SCR_HEIGHT/60)))
         self.roleLabel.place(relx=0.49, rely=0.4, anchor="w")
-        self.role= ttk.Combobox(self,width=28,values=["edit","view"],height=50,font=("Livvic Regular", int(SCR_HEIGHT/60)))
-        self.role.place(relx=0.49, rely=0.45, anchor="w",height=50)
-        self.role.set("choose a role")
+
+        s = ttk.Style()
+        s.configure('role.TCombobox',  background='#BDC3C6')
+        font = Font(family = "Livvic Regular", size = int(SCR_HEIGHT/72))
+        self.option_add("*TCombobox*Listbox*Font", font)
+        s.map('role.TCombobox', selectforeground=[('readonly', '#38393B')], selectbackground=[('readonly', '#BDC3C6')], fieldbackground=[('readonly', '#BDC3C6')], background=[('readonly', '#BDC3C6')])
+        self.role = ttk.Combobox(self, state="readonly", style='role.TCombobox', values=["edit","view"], font=('Livvic Regular', int(SCR_HEIGHT/60)), width=30)
+        self.role.set("edit")
+        self.role.place(relx=0.49, rely=0.45, anchor="w")
         # add user button function
         def add():
             user=Ownership
             user.add_stock_user
         #Button add user
-        self.add_user_btn= ttk.Button(self, text="add user", style='sidebar_btn.TButton', padding=(10,10),width=20)
+        self.add_user_btn= ttk.Button(self, text="add user", style='stock_settings_btn.TButton', bootstyle=PRIMARY)
         self.add_user_btn.place(relx=0.75, rely= 0.45, anchor="w")
         #users list section
         self.list= ttk.Label(self, text="users list", foreground="#4D5D69", font=("Livvic SemiBold", int(SCR_HEIGHT/60)))

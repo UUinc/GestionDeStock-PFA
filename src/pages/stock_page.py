@@ -141,7 +141,7 @@ class StockPage(ttk.Frame):
         style.configure('product.Treeview', rowheight=30, padding=5, font=("Livvic Regular", 12))
         # configure the Treeview heading style
         style.configure("product.Treeview.Heading", font=("Livvic Medium", 14), stretch=False)
-         # Create treeview
+        # Create treeview
         self.tree = ttk.Treeview(self, columns=("ID", "Name", "Description", "Unit Price", "Quantity", "Status", "Entry Date", "Release Date", "Action", ""), show='headings', style='product.Treeview', height=21)
         self.tree.heading("ID", text="ID", anchor="w")
         self.tree.heading("Name", text="Name", anchor="w")
