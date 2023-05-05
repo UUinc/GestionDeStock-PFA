@@ -98,7 +98,6 @@ class StockSettingsPage(ttk.Frame):
         #Stock Settings page Subtitle
         #stock name
         self.stock_id = controller.get_stock_id()
-        print(self.stock_id)
         stock = Stock.get_stock(self.stock_id)
         stock_name = stock.get_name()
         self.pageSubtitle = ttk.Label(self, text=stock_name, foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/40)))
@@ -202,7 +201,6 @@ class StockSettingsPage(ttk.Frame):
             ownership = Ownership.get_ownership(self.username, self.stock_id)
            
             if column == "#4":
-                print("edit: "+username)
                 if ownership.get_role() == 'edit':
                     self.edit_role(username)
                     self.controller.update_page(StockSettingsPage)

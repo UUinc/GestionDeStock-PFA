@@ -54,7 +54,6 @@ class Stock:
         conn.commit()
 
         self.__stock_id = cur.lastrowid
-        print('new stock added')
         conn.close()
 
     @staticmethod
@@ -108,7 +107,6 @@ class Stock:
                        WHERE stock_id = %s
                     ''', (self.__name, self.__description, self.__last_edit, self.__stock_id))
         conn.commit()
-        print('stock updated')
         conn.close()
 
     @staticmethod
@@ -117,7 +115,6 @@ class Stock:
         cur = conn.cursor()
         cur.execute('DELETE FROM stock WHERE stock_id = %s', stock_id)
         conn.commit()
-        print('stock deleted')
         conn.close()
 
 

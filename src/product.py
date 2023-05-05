@@ -116,7 +116,6 @@ class Product:
                     (self.__name, self.__description, self.__unit_price, self.__quantity, self.__alert_threshold, self.__last_entry_date, stock_id))
         conn.commit()
         self.__product_id = cur.lastrowid
-        print('new product added')
         conn.close()
 
     @staticmethod
@@ -125,7 +124,6 @@ class Product:
         cur = conn.cursor()
         cur.execute('DELETE FROM product WHERE product_id = %s', product_id)
         conn.commit()
-        print('product deleted')
         conn.close()
     
     def update_product(self, stock_id, product_id):
@@ -136,7 +134,6 @@ class Product:
                        WHERE product_id = %s
                     ''', (self.__name, self.__description, self.__unit_price, self.__quantity, self.__alert_threshold, self.__last_entry_date, self.__last_release_date, stock_id, product_id))
         conn.commit()
-        print('product updated')
         conn.close()
 
     @staticmethod

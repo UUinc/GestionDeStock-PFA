@@ -51,7 +51,6 @@ class User:
         cur = conn.cursor()
         cur.execute("UPDATE user SET first_name=%s, last_name=%s, email=%s WHERE username=%s", (self.__first_name, self.__last_name, self.__email, self.__username))
         conn.commit()
-        print("updated")
         conn.close()
     
     def update_password(self, password):
@@ -59,7 +58,6 @@ class User:
         cur = conn.cursor()
         cur.execute("UPDATE user SET password=%s WHERE username=%s", (hash_password(password), self.__username))
         conn.commit()
-        print("updated")
         conn.close()
      
     def get_firstname(self):

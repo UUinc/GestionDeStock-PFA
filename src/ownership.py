@@ -64,7 +64,6 @@ class Ownership:
         cur = conn.cursor()
         cur.execute('DELETE FROM stockownership WHERE username= %s and stock_id = %s', (username, stock_id))
         conn.commit()
-        print('stock user removed')
         conn.close()
 
     def update_stock_user(self):
@@ -75,7 +74,6 @@ class Ownership:
                        WHERE stock_id = %s and username= %s
                     ''', (self.__ownership_start_date, self.__role, self.__stock_id, self.__username))
         conn.commit()
-        print('stock user updated')
         conn.close()
 
     @staticmethod

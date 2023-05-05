@@ -106,7 +106,6 @@ class StockPage(ttk.Frame):
 
         #stock name
         self.stock_id = controller.get_stock_id()
-        print(self.stock_id)
         stock = Stock.get_stock(self.stock_id)
         stock_name = stock.get_name()
         self.stocknameTitle = ttk.Label(self, text=stock_name, foreground="#4D5D69", font=("Livvic Medium", int(SCR_HEIGHT/40)))
@@ -209,7 +208,6 @@ class StockPage(ttk.Frame):
             ownership = Ownership.get_ownership(self.username, self.stock_id)
      
             if column == "#9":
-                print("edit: "+id_value)
                 if ownership.get_role() == 'edit':
                     self.controller.set_product_id(id_value)
                     from src.pages.product_page import ProductPage

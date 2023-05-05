@@ -189,12 +189,10 @@ class HomePage(ttk.Frame):
             id_value = self.tree.item(item_id, "values")[0]
             ownership = Ownership.get_ownership(self.username, id_value)
             if column == "#1" or column == "#2":
-                print("open: "+id_value)
                 self.controller.set_stock_id(id_value)
                 from src.pages.stock_page import StockPage
                 self.controller.update_page(StockPage)
             elif column == "#6":
-                print("edit: "+id_value)
                 if ownership.get_role() == 'edit':
                     self.controller.set_stock_id(id_value)
                     from src.pages.stock_settings_page import StockSettingsPage
