@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2023 at 05:48 PM
+-- Generation Time: May 05, 2023 at 11:39 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `product` (
   `product_id` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `description` varchar(100) DEFAULT NULL,
+  `name` varchar(30) NOT NULL,
+  `description` varchar(150) DEFAULT NULL,
   `unit_price` float NOT NULL,
   `quantity` int(11) NOT NULL,
   `alert_threshold` int(11) NOT NULL,
@@ -47,8 +47,8 @@ CREATE TABLE `product` (
 
 CREATE TABLE `stock` (
   `stock_id` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `description` varchar(100) DEFAULT NULL,
+  `name` varchar(30) NOT NULL,
+  `description` varchar(150) DEFAULT NULL,
   `last_edit` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `creation_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -89,7 +89,7 @@ CREATE TABLE `user` (
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`product_id`),
-  ADD KEY `stock_id` (`stock_id`);
+  ADD KEY `product_ibfk_1` (`stock_id`);
 
 --
 -- Indexes for table `stock`
@@ -102,7 +102,7 @@ ALTER TABLE `stock`
 --
 ALTER TABLE `stockownership`
   ADD PRIMARY KEY (`username`,`stock_id`),
-  ADD KEY `stock_id` (`stock_id`);
+  ADD KEY `stockownership_ibfk_2` (`stock_id`);
 
 --
 -- Indexes for table `user`
@@ -136,7 +136,7 @@ ALTER TABLE `stock`
 -- Constraints for table `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`stock_id`) REFERENCES `stock` (`stock_id`);
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`stock_id`) REFERENCES `stock` (`stock_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `stockownership`
