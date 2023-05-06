@@ -54,9 +54,14 @@ different screens to perform the desired action.
 
 ## Demo
 
-![image](https://user-images.githubusercontent.com/63449913/236535007-5aa5ef64-f3c1-484b-b6fd-f83a4b59d3e0.png)
-![image](https://user-images.githubusercontent.com/63449913/236535158-52b791f3-a56a-44df-8404-755c888079f4.png)
-
+![image](https://user-images.githubusercontent.com/63449913/236636369-6c9cda33-9758-4b5b-bde9-d6259f831b4b.png)
+![image](https://user-images.githubusercontent.com/63449913/236636325-e4d69f6e-5b76-4ec2-8940-317c07dc3026.png)
+![image](https://user-images.githubusercontent.com/63449913/236636159-d89bd6a1-ed1d-4e1d-b845-669495cfa2e6.png)
+![image](https://user-images.githubusercontent.com/63449913/236636201-935a5862-f88d-4a87-afdc-94624850b989.png)
+![image](https://user-images.githubusercontent.com/63449913/236636247-c0c7474b-f5cd-4e18-bc2b-3c041e0c9a80.png)
+![image](https://user-images.githubusercontent.com/63449913/236636462-297575c9-80a4-40c2-95ad-82b770bf2f81.png)
+![image](https://user-images.githubusercontent.com/63449913/236636520-04b966d7-3daa-48cd-a28f-d7dd9b7b7208.png)
+![image](https://user-images.githubusercontent.com/63449913/236636592-90831e1d-70b0-46b3-af25-a579fe8d0406.png)
 
 ## Credits
 
