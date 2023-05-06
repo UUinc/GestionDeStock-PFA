@@ -198,7 +198,7 @@ class StockPage(ttk.Frame):
         return "In Stock"
 
     def add_row(self, id, name, description, unit_price, quantity, threshold, entry_date, release_date):
-        item_id = self.tree.insert("", "end", values=(id, name, description, unit_price, quantity, self.get_status(quantity, threshold), entry_date, release_date, "Edit", "Delete"))
+        item_id = self.tree.insert("", "end", values=(id, name, description, "$"+str(unit_price), quantity, self.get_status(quantity, threshold), entry_date, release_date, "Edit", "Delete"))
 
     def on_click(self, event):
         item_id = self.tree.identify_row(event.y)
